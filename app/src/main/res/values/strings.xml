@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Mi Alojamiento SV</string>
+    <string name="explorar">Explorar</string>
+    <string name="mapa">Mapa</string>
+    <string name="perfil">Perfil</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="mensajes">Mensajes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

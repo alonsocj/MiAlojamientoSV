@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/explore"
+        android:title="@string/explorar"
+        android:icon="@drawable/ic_explore" />
+    <item android:id="@+id/favoritos"
+        android:title="@string/favoritos"
+        android:icon="@drawable/ic_favoritos" />
+    <item android:id="@+id/mapa"
+        android:title="@string/mapa"
+        android:icon="@drawable/ic_mapa" />
+    <item android:id="@+id/mensajes"
+        android:title="@string/mensajes"
+        android:icon="@drawable/ic_mensaje" />
+    <item android:id="@+id/perfil"
+        android:title="@string/perfil"
+        android:icon="@drawable/ic_perfil" />
+</menu>
