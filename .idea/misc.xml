@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/User/Documents/AndroidStudioProjects/MiAlojamientoSV/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.125" />
+        <entry key="..\:/User/Documents/AndroidStudioProjects/MiAlojamientoSV/app/src/main/res/drawable/ic_launcher_background.xml" value="0.125" />
+        <entry key="..\:/User/Documents/AndroidStudioProjects/MiAlojamientoSV/app/src/main/res/drawable/ic_perfil.xml" value="0.125" />
+        <entry key="..\:/User/Documents/AndroidStudioProjects/MiAlojamientoSV/app/src/main/res/layout/activity_splash_screen.xml" value="0.2" />
+        <entry key="..\:/User/Documents/AndroidStudioProjects/MiAlojamientoSV/app/src/main/res/menu/my_navigation_items.xml" value="0.2" />
         <entry key="..\:/Users/Alonso/AndroidStudioProjects/MiAlojamientoSV/app/src/main/res/drawable/item_selector.xml" value="0.2235" />
         <entry key="..\:/Users/Alonso/AndroidStudioProjects/MiAlojamientoSV/app/src/main/res/drawable/round_corner.xml" value="0.2235" />
         <entry key="..\:/Users/Alonso/AndroidStudioProjects/MiAlojamientoSV/app/src/main/res/layout/activity_main.xml" value="0.33" />

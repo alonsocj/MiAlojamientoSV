@@ -17,7 +17,6 @@
         android:theme="@style/Theme.MiAlojamientoSV"
         tools:replace="android:icon"
         tools:targetApi="31">
-
         <meta-data
             android:name="DATABASE"
             android:value="mialojamientosv.db" />
@@ -34,6 +33,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
+        </activity>
+        <activity
+            android:name=".SplashScreen"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
