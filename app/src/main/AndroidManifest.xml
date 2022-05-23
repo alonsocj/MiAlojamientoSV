@@ -4,6 +4,8 @@
     package="sv.edu.ues.fia.eisi.mialojamientosv">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name="com.orm.SugarApp"
@@ -29,6 +31,10 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="sv.edu.ues.fia.eisi.mialojamiento.sv" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCi5uoSjvHU8jxRAfRgvH7WcbWr-gylDV8"/>
 
         <activity
             android:name=".MainActivity"
