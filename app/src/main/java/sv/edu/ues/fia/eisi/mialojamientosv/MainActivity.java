@@ -2,28 +2,21 @@ package sv.edu.ues.fia.eisi.mialojamientosv;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 
-import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.util.Objects;
-
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityMainBinding;
-import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.ExploreFragment;
-import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.FavoritosFragment;
-import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.MapaFragment;
-import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.MensajeFragment;
-import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.PerfilFragment;
+import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.FavoritosActivity;
+import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.MapaActivity;
+import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.MensajesActivity;
+import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.PerfilActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         navigationView = binding.bottomNavigation;
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new MapaFragment()).commit();
-        navigationView.setSelectedItemId(R.id.mapa);
+        navigationView.setSelectedItemId(R.id.explore);
 
        /*
         * BadgeDrawable badgeDrawable = navigationView.getOrCreateBadge(R.id.mensajes);
@@ -53,27 +45,32 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment = null;
-                switch (item.getItemId()) {
-                    case R.id.explore:
-                        fragment = new ExploreFragment();
-                        break;
-                    case R.id.favoritos:
-                        fragment = new FavoritosFragment();
-                        break;
-                    case R.id.mapa:
-                        fragment = new MapaFragment();
-                        break;
-                    case R.id.mensajes:
-                        fragment = new MensajeFragment();
-                        break;
-                    case R.id.perfil:
-                        fragment = new PerfilFragment();
-                        break;
-                }
-                getSupportFragmentManager().beginTransaction().replace(R.id.body_container, Objects.requireNonNull(fragment)).commit();
+                setActivity(item);
                 return true;
             }
         });
+    }
+    @SuppressLint("NonConstantResourceId")
+    public void setActivity(@NonNull MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.explore:
+                break;
+            case R.id.favoritos:
+                startActivity(new Intent(MainActivity.this, FavoritosActivity.class));
+                overridePendingTransition(0,0);
+                break;
+            case R.id.mapa:
+                startActivity(new Intent(MainActivity.this, MapaActivity.class));
+                overridePendingTransition(0,0);
+                break;
+            case R.id.mensajes:
+                startActivity(new Intent(MainActivity.this, MensajesActivity.class));
+                overridePendingTransition(0,0);
+                break;
+            case R.id.perfil:
+                startActivity(new Intent(MainActivity.this, PerfilActivity.class));
+                overridePendingTransition(0,0);
+                break;
+        }
     }
 }

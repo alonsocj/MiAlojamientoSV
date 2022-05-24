@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/body_container"
     android:background="@color/light_white"
-    tools:context=".MainActivity">
+    tools:context=".ui.view.PerfilActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Explore Activity"
+        android:text="Perfil Activity"
         android:textSize="30sp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,4 +31,4 @@
         app:labelVisibilityMode="unlabeled"
         app:itemIconTint="@drawable/item_selector"/>
 
-  </RelativeLayout>
+</RelativeLayout>

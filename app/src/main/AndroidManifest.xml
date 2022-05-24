@@ -4,8 +4,8 @@
     package="sv.edu.ues.fia.eisi.mialojamientosv">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name="com.orm.SugarApp"
@@ -19,6 +19,19 @@
         android:theme="@style/Theme.MiAlojamientoSV"
         tools:replace="android:icon"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.view.PerfilActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.MensajesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.FavoritosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.MapaActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="DATABASE"
             android:value="mialojamientosv.db" />
@@ -31,18 +44,16 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="sv.edu.ues.fia.eisi.mialojamiento.sv" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCi5uoSjvHU8jxRAfRgvH7WcbWr-gylDV8"/>
+            android:value="AIzaSyCi5uoSjvHU8jxRAfRgvH7WcbWr-gylDV8" />
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".SplashScreen"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
