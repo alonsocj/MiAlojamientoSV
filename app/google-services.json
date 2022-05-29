@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "189238388108",
+    "project_id": "mialojamientosv-pdm115",
+    "storage_bucket": "mialojamientosv-pdm115.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189238388108:android:330a07453b30de7e1722a9",
+        "android_client_info": {
+          "package_name": "sv.edu.ues.fia.eisi.mialojamientosv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "189238388108-2lqvf6vjaee58bjcjt8vqd4brj906r5l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4JQ6fsJmFN3bcjCvZAWC4CS3tPbj55m0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "189238388108-2lqvf6vjaee58bjcjt8vqd4brj906r5l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/light_white"
     tools:context=".ui.view.FavoritosActivity">
 
@@ -20,6 +21,17 @@
             app:lottie_loop="false"
             app:lottie_rawRes="@raw/favoriteheart" />
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/pushE"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Enviar Notificacion"
+            android:layout_margin="10dp"
+            android:background="@color/design_default_color_primary_dark"></Button>
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
