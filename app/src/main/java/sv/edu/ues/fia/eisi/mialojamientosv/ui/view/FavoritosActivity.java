@@ -101,7 +101,6 @@ public class FavoritosActivity extends AppCompatActivity {
         RequestQueue myrequest = Volley.newRequestQueue(getApplicationContext());
         JSONObject json = new JSONObject();
         try{
-            token ="eu61ErSkRQ2O8ybrE8Viqd:APA91bE8hZ-jipUWNzx5ZZtzonQnOQOO4ZB5tjtcvJ_6MqDgA49RQO-r6Pbfk3cdkrHyfR2W2NYWSMtNUW8KzjZzXUtjpTG4-hznl3oWrCHvHUY9JpJUSXwMTVXFy_zSEhQgHNt_GFsD";
             json.put("to",token);
             JSONObject notificacion =new JSONObject();
             notificacion.put("titulo","Mensaje Nuevo");
