@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/light_white"
     tools:context=".ui.view.HotelActivity">
 
     <TextView
@@ -24,5 +25,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@string/hotel_address" />
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationFavoriteHotel"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_weight="1"
+            app:lottie_autoPlay="false"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@raw/favoriteheart" />
 
 </LinearLayout>

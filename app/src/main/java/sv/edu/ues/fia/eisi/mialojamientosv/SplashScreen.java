@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Favorito;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
 
 @SuppressLint("CustomSplashScreen")
@@ -20,6 +22,7 @@ public class SplashScreen extends AppCompatActivity {
 
 
         llenarHoteles();
+        llenarPerfil();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -48,5 +51,17 @@ public class SplashScreen extends AppCompatActivity {
             hotel.setLongitudH("Longitud " + i);
             hotel.save();
         }
+    }
+    private void llenarPerfil() {
+        Favorito.deleteAll(Favorito.class);
+        Perfil.deleteAll(Perfil.class);
+            Perfil perfil = new Perfil();
+            perfil.setIdPerfil(1);
+            perfil.setNombre("Perfil 1");
+            perfil.setLatitud("Latitud 1");
+            perfil.setLongitud("Longitud 1");
+            perfil.setGenero("Masculino");
+            perfil.setEmail("email");
+            perfil.save();
     }
 }
