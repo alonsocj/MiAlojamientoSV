@@ -2,6 +2,8 @@ package sv.edu.ues.fia.eisi.mialojamientosv.ui.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -28,20 +30,30 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListHotelAdapter;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityFavoritosBinding;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityMapaBinding;
+import sv.edu.ues.fia.eisi.mialojamientosv.favoritoDetalleActivity;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Favorito;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
 
 public class FavoritosActivity extends AppCompatActivity {
-    Button pushEspecifico;
+
     ActivityFavoritosBinding binding;
     BottomNavigationView navigationView;
-    LottieAnimationView botonf;
-    DatabaseReference data;
+    RecyclerView listHoteles;
+    List<Hotel> hoteles;
+    List<Favorito> favoritos ;
+    Perfil perfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,26 +61,31 @@ public class FavoritosActivity extends AppCompatActivity {
         binding = ActivityFavoritosBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        pushEspecifico = findViewById(R.id.pushE);
+        hoteles = new ArrayList<Hotel>();
+        favoritos = new ArrayList<Favorito>();
+        //recylcerview
+        listHoteles = binding.listHoteles;
+        //botom navigation
         navigationView = binding.bottomNavigation;
         navigationView.setSelectedItemId(R.id.favoritos);
-        botonf = (LottieAnimationView) findViewById(R.id.animationFavorite);
-        data = FirebaseDatabase.getInstance().getReference();
-        botonf.setProgress(1);
-        pushEspecifico.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                consultaToken();
+        try{
+            perfil = Perfil.find(Perfil.class, "ID_PERFIL = " + 1, null).get(0);
+            favoritos =  Favorito.findWithQuery(Favorito.class, "SELECT * FROM FAVORITO WHERE PERFIL = "+perfil.getId());
+            if(favoritos.size() != 0){
+                for (int i = 0; i < favoritos.size(); i++) {
+                    hoteles.add(favoritos.get(i).getHotel());
+                }
+                //manager de recycler
+                Toast.makeText(view.getContext(), "AAA", Toast.LENGTH_LONG).show();
+                listHoteles.setLayoutManager(new LinearLayoutManager(this));
+                ListHotelAdapter adapter = new ListHotelAdapter(hoteles);
+                listHoteles.setAdapter(adapter);
+            }else{
+                Toast.makeText(view.getContext(), "nada", Toast.LENGTH_LONG).show();
             }
-        });
-
-        botonf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                botonf.playAnimation();
-                //botonf.setProgress(0);
-            }
-        });
+        }catch (Exception e){
+            Toast.makeText(view.getContext(), "hola", Toast.LENGTH_LONG).show();
+        }
 
         navigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
@@ -78,49 +95,6 @@ public class FavoritosActivity extends AppCompatActivity {
                 return true;
             }
         });
-    }
-
-    private void consultaToken(){
-        data.child("token").child("id").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    String token = snapshot.getValue().toString();
-                    NotificacionEspecifico(token);
-                }else{
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void NotificacionEspecifico(String token) {
-        RequestQueue myrequest = Volley.newRequestQueue(getApplicationContext());
-        JSONObject json = new JSONObject();
-        try{
-            json.put("to",token);
-            JSONObject notificacion =new JSONObject();
-            notificacion.put("titulo","Mensaje Nuevo");
-            notificacion.put("detalle","Tiene mensajes nuevos");
-            json.put("data",notificacion);
-            String url = "https://fcm.googleapis.com/fcm/send";
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,json,null,null){
-                @Override
-                public Map<String, String> getHeaders(){
-                    Map<String, String> header = new HashMap<>();
-                    header.put("Authorization", "key=AAAALA98pYw:APA91bHRnlGfODSkRge-a_oNmTdSWGLr1WlYytnXsr1FVTgdWHn_kjCL7Vmrv9OtgbEVDJozqAgKlKjyip2-h_3UEokH2VtLRPPnaffb0ZAjsCCkMZZESroqb5H3-fenUmzpQU-nzp3_");
-                    header.put("Content-type", "application/json");
-                    return header;
-                }
-            };
-            myrequest.add(request);
-        }catch (JSONException e){
-            e.printStackTrace();
-            Toast.makeText(this,"no sirve",Toast.LENGTH_LONG);
-        }
     }
 
     @SuppressLint("NonConstantResourceId")

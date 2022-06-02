@@ -5,7 +5,7 @@
     <string name="perfil">Perfil</string>
     <string name="favoritos">Favoritos</string>
     <string name="mensajes">Mensajes</string>
-  
+
     <!--Perfil-->
     <string name="tituloPerfil">Usuario</string>
     <string name="nombrePerfil">Nombre</string>
