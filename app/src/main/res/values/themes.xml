@@ -14,4 +14,10 @@
         <item name="android:windowLightStatusBar" tools:targetApi="21" tools:ignore="NewApi">true</item>
         <!-- Customize your theme here. -->
     </style>
+    <!--Color de bordes de editText-->
+    <style name="CampoTexto" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#000C8F</item>
+        <item name="colorControlActivated">#06AEC4</item>
+        <item name="android:textColorHighlight">#000000</item>
+    </style>
 </resources>
