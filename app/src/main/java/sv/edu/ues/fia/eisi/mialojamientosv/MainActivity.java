@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView navigationView;
     RecyclerView listHoteles;
     List<Hotel> hoteles;
-    LottieAnimationView botonf;
 
     @SuppressLint("ResourceAsColor")
     @Override
