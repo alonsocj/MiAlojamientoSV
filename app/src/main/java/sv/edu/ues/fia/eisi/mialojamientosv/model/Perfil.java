@@ -3,9 +3,9 @@ package sv.edu.ues.fia.eisi.mialojamientosv.model;
 public class Perfil {
     private int idPerfil;
     private String nombre;
-    private String Latitud;
-    private String Longitud;
-    private String Genero;
+    private String latitud;
+    private String longitud;
+    private String genero;
     private String email;
 
     public Perfil() {
@@ -14,9 +14,9 @@ public class Perfil {
     public Perfil(int idPerfil, String nombre, String latitud, String longitud, String genero, String email) {
         this.idPerfil = idPerfil;
         this.nombre = nombre;
-        Latitud = latitud;
-        Longitud = longitud;
-        Genero = genero;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.genero = genero;
         this.email = email;
     }
 
@@ -37,27 +37,27 @@ public class Perfil {
     }
 
     public String getLatitud() {
-        return Latitud;
+        return latitud;
     }
 
     public void setLatitud(String latitud) {
-        Latitud = latitud;
+        this.latitud = latitud;
     }
 
     public String getLongitud() {
-        return Longitud;
+        return longitud;
     }
 
     public void setLongitud(String longitud) {
-        Longitud = longitud;
+        this.longitud = longitud;
     }
 
     public String getGenero() {
-        return Genero;
+        return genero;
     }
 
     public void setGenero(String genero) {
-        Genero = genero;
+        this.genero = genero;
     }
 
     public String getEmail() {
