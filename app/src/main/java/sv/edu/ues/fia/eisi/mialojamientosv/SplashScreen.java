@@ -42,6 +42,7 @@ public class SplashScreen extends AppCompatActivity {
             hotel.setPropietario(propietario);
             hotel.setIdHotel(i);
             hotel.setTitulo("Hotel " + i);
+            hotel.setImagen("https://images.trvl-media.com/hotels/20000000/19770000/19760800/19760779/3498fa05_z.jpg");
             hotel.setDescripcion("Descripcion " + i);
             hotel.setDireccion("Direccion " + i);
             hotel.setLatitudH("Latitud " + i);

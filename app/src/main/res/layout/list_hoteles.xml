@@ -30,10 +30,10 @@
                 app:lottie_rawRes="@raw/favoriteheart" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/ivHotel"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
-                android:background="@color/card_4"
+                android:scaleType="fitXY"
                 android:foreground="?android:attr/selectableItemBackground" />
 
 

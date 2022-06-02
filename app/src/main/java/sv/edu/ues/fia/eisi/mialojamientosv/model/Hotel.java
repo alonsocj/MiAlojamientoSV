@@ -5,6 +5,7 @@ import com.orm.SugarRecord;
 public class Hotel extends SugarRecord<Hotel> {
     private int idHotel;
     private String titulo;
+    private String imagen;
     private String descripcion;
     private String direccion;
     private String latitudH;
@@ -14,9 +15,10 @@ public class Hotel extends SugarRecord<Hotel> {
     public Hotel() {
     }
 
-    public Hotel(int idHotel, String titulo, String descripcion, String direccion, String latitudH, String longitudH, Propietario propietario) {
+    public Hotel(int idHotel, String titulo, String imagen, String descripcion, String direccion, String latitudH, String longitudH, Propietario propietario) {
         this.idHotel = idHotel;
         this.titulo = titulo;
+        this.imagen = imagen;
         this.descripcion = descripcion;
         this.direccion = direccion;
         this.latitudH = latitudH;
@@ -38,6 +40,14 @@ public class Hotel extends SugarRecord<Hotel> {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public String getDescripcion() {
