@@ -5,4 +5,18 @@
     <string name="perfil">Perfil</string>
     <string name="favoritos">Favoritos</string>
     <string name="mensajes">Mensajes</string>
+
+
+    <!--Perfil-->
+    <string name="tituloPerfil">Usuario</string>
+    <string name="nombrePerfil">Nombre</string>
+    <string name="generoPerfil">Género</string>
+    <string name="emailPerfil">Email</string>
+
+    <!--Login-->
+    <string name="tituloLogin">Login</string>
+    <string name="usuarioLogin">Email</string>
+    <string name="passwordLogin">Password</string>
+    <string name="botonRegistrarse">Registrarse</string>
+    <string name="botonIniciar">Ingresar</string>
 </resources>
