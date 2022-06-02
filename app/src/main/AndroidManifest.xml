@@ -23,6 +23,9 @@
         <activity
             android:name=".ui.view.HotelActivity"
             android:exported="false" />
+      <activity
+            android:name=".homeLogin"
+            android:exported="false" />
         <activity
             android:name=".ui.view.PerfilActivity"
             android:exported="false" />
