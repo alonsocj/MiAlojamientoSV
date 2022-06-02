@@ -17,6 +17,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,6 +33,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -44,6 +47,7 @@ import sv.edu.ues.fia.eisi.mialojamientosv.GetNearbyPlacesData;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityMapaBinding;
+import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.HotelViewModel;
 
 public class MapaActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -55,6 +59,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     GoogleApiClient mGoogleApiClient;
     double currentLatitud, currentLongitud;
     Location myLocation;
+    boolean firstTime = true;
 
     private static final int REQUEST_CHECK_SETTINGS_GPS = 0x1;
     private final static int REQUEST_ID_MULTIPLE_PERMISSIONS = 0x2;
@@ -127,25 +132,39 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+        //Pinta el mapa en la pantalla
         nmap = googleMap;
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
         myLocation = location;
-        if(myLocation !=null){
+
+        while (firstTime){
+        if(myLocation !=null) {
+            //Obtengo la latitud y longitud de donde me encuentro
             currentLatitud = location.getLatitude();
             currentLongitud = location.getLongitude();
 
-            nmap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitud,currentLongitud),15.0f));
+            //Estilo de marker
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.marcador);
+
+
+            //Esto realiza el Zoom a la ubicacion en donde se encuentra la persona, asignando la latitud, longitud y zoom respectivo
+            nmap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitud, currentLongitud), 15.0f));
+
+            //Agrego el Marker en el Mapa
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(new LatLng(currentLatitud, currentLongitud));
             markerOptions.title("Tu ubicacion");
+            markerOptions.icon(icon);
+
+            //Agrego el marker en el mapa
             nmap.addMarker(markerOptions);
-
-            /*Consumo*/
+            /*Consumo de hoteles cercanos, referentes a la localizacion de la persona*/
             getNearbyHotels();
-
+        }
+        firstTime = false;
         }
     }
 
@@ -154,7 +173,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         stringBuilder.append("location="+String.valueOf(currentLatitud)+","+String.valueOf(currentLongitud));
         stringBuilder.append("&radius=1000");
         stringBuilder.append("&type=hotel");
-        stringBuilder.append("&key=AIzaSyBtsOvxahi9ezaqbLGpt2dTqKlovZmepS4");
+        stringBuilder.append("&key=AIzaSyCi5uoSjvHU8jxRAfRgvH7WcbWr-gylDV8"); //Cambiar esta llave, No es aceptada.
 
         String url = stringBuilder.toString();
         Object dataTrasfer[] = new Object[2];
@@ -163,7 +182,6 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
 
         GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
         getNearbyPlacesData.execute(dataTrasfer);
-
 
     }
 
@@ -178,16 +196,15 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
 
         List<String> listaPermisos = new ArrayList<>();
         if(permissionLocation != PackageManager.PERMISSION_GRANTED){
-            listaPermisos.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            //No se dio el permiso
 
-            /*Verificar este if porque aqui se niega el permiso*/
+            listaPermisos.add(Manifest.permission.ACCESS_FINE_LOCATION);
             if(!listaPermisos.isEmpty()){
-                ActivityCompat.requestPermissions(this,
-                        listaPermisos.toArray(new String[listaPermisos.size()]),
+                ActivityCompat.requestPermissions(this, listaPermisos.toArray(new String[listaPermisos.size()]),
                         REQUEST_ID_MULTIPLE_PERMISSIONS);
             }
-
         }else{
+            //Se da el permiso
             getMyLocation();
         }
 
@@ -199,9 +216,14 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         int permissionLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
         if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+            //Se autoriza el permiso de la localizacion y redirige a la ubicacion en donde se encuentra el usuario
             getMyLocation();
         } else {
+            //No acepta el permiso y si se le da el Deny de no volver a preguntar
+            Toast.makeText(this, "Debe de dar permiso en su dispositivo", Toast.LENGTH_SHORT).show();
             verificarpermisos();
+            Intent intent = new Intent(MapaActivity.this, MainActivity.class);
+            startActivity(intent);
         }
 
     }
@@ -223,6 +245,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                 int permissionLocation = ContextCompat.checkSelfPermission(MapaActivity.this,
                         Manifest.permission.ACCESS_FINE_LOCATION);
                 if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+                    //Obtiene la localizacion
                     myLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                     LocationRequest locationRequest = new LocationRequest();
                     locationRequest.setInterval(3000);
@@ -231,11 +254,9 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                     LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                             .addLocationRequest(locationRequest);
                     builder.setAlwaysShow(true);
-                    LocationServices.FusedLocationApi
-                            .requestLocationUpdates(mGoogleApiClient, locationRequest, this::onLocationChanged);
+                    LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this::onLocationChanged);
                     PendingResult<LocationSettingsResult> result =
-                            LocationServices.SettingsApi
-                                    .checkLocationSettings(mGoogleApiClient, builder.build());
+                            LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
                     result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
 
                         @Override
@@ -245,16 +266,9 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                                 case LocationSettingsStatusCodes.SUCCESS:
                                     // All location settings are satisfied.
                                     // You can initialize location requests here.
-                                    int permissionLocation = ContextCompat
-                                            .checkSelfPermission(MapaActivity.this,
-                                                    Manifest.permission.ACCESS_FINE_LOCATION);
+                                    int permissionLocation = ContextCompat.checkSelfPermission(MapaActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
                                     if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
-
-
-                                        myLocation = LocationServices.FusedLocationApi
-                                                .getLastLocation(mGoogleApiClient);
-
-
+                                        myLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                                     }
                                     break;
                                 case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
@@ -264,22 +278,18 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
                                         // Show the dialog by calling startResolutionForResult(),
                                         // and check the result in onActivityResult().
                                         // Ask to turn on GPS automatically
-                                        status.startResolutionForResult(MapaActivity.this,
-                                                REQUEST_CHECK_SETTINGS_GPS);
+                                        status.startResolutionForResult(MapaActivity.this, REQUEST_CHECK_SETTINGS_GPS);
 
 
                                     } catch (IntentSender.SendIntentException e) {
                                         // Ignore the error.
                                     }
-
-
                                     break;
                                 case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                                     // Location settings are not satisfied.
                                     // However, we have no way
                                     // to fix the
                                     // settings so we won't show the dialog.
-                                    // finish();
                                     break;
                             }
                         }

@@ -2,7 +2,8 @@ package sv.edu.ues.fia.eisi.mialojamientosv.model;
 
 import com.orm.SugarRecord;
 
-public class Perfil extends SugarRecord<Perfil>{
+
+public class Perfil extends SugarRecord<Perfil> {
     private int idPerfil;
     private String nombre;
     private String latitud;

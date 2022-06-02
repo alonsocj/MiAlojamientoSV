@@ -1,6 +1,8 @@
 package sv.edu.ues.fia.eisi.mialojamientosv.model;
 
-public class Propietario {
+import com.orm.SugarRecord;
+
+public class Propietario extends SugarRecord<Propietario> {
     private String idPropietario;
     private String nombre;
 

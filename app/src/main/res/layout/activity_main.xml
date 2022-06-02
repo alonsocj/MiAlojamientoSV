@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/body_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/body_container"
     android:background="@color/light_white"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Explore Activity"
-        android:textSize="30sp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listHoteles"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="0dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -22,15 +22,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
-        android:elevation="2dp"
-        app:menu="@menu/my_navigation_items"
         android:background="@drawable/round_corner"
-        app:itemRippleColor="@android:color/transparent"
+        android:elevation="2dp"
         app:itemIconSize="30dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemRippleColor="@android:color/transparent"
         app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@drawable/item_selector"/>
+        app:menu="@menu/my_navigation_items" />
 
-  </RelativeLayout>
+</RelativeLayout>
