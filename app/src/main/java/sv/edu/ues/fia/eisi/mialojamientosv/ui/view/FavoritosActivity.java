@@ -54,7 +54,7 @@ public class FavoritosActivity extends AppCompatActivity {
         navigationView.setSelectedItemId(R.id.favoritos);
         botonf = (LottieAnimationView) findViewById(R.id.animationFavorite);
         data = FirebaseDatabase.getInstance().getReference();
-        consultaToken();
+        botonf.setProgress(1);
         pushEspecifico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
