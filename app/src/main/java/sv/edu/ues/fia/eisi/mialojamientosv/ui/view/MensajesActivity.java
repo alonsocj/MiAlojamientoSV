@@ -31,7 +31,7 @@ public class MensajesActivity extends AppCompatActivity {
 
         navigationView = binding.bottomNavigation;
 
-        navigationView.setSelectedItemId(R.id.mapa);
+        navigationView.setSelectedItemId(R.id.mensajes);
 
         /*
          * BadgeDrawable badgeDrawable = navigationView.getOrCreateBadge(R.id.mensajes);
