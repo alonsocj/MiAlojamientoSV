@@ -10,41 +10,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListHotelAdapter;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityFavoritosBinding;
-import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityMapaBinding;
-import sv.edu.ues.fia.eisi.mialojamientosv.favoritoDetalleActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Favorito;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
-import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
 
 public class FavoritosActivity extends AppCompatActivity {
 
@@ -65,6 +45,7 @@ public class FavoritosActivity extends AppCompatActivity {
         favoritos = new ArrayList<Favorito>();
         //recylcerview
         listHoteles = binding.listHoteles;
+
         //botom navigation
         navigationView = binding.bottomNavigation;
         navigationView.setSelectedItemId(R.id.favoritos);
