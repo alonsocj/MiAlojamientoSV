@@ -1,39 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/light_white"
     tools:context=".ui.view.HotelActivity">
 
-    <TextView
-        android:id="@+id/tvHotel_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/infoHotel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivHotel"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="fitXY" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationFavoriteHotel"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_marginStart="300dp"
+                android:layout_marginTop="-20dp"
+                android:layout_weight="1"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="false"
+                app:lottie_rawRes="@raw/favoriteheart" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="180dp"
+                android:background="@drawable/background_shape" />
+
+            <TextView
+                android:id="@+id/tvHotel_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="180dp"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:text="@string/hotel_title" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvHotel_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            tools:text="@string/hotel_description" />
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            tools:text="@string/hotel_address" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/payment_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="@string/hotel_title" />
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/round_corner"
+        android:elevation="2dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvHotel_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@string/hotel_description" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="$150.00 noche"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@string/hotel_address" />
+        <Button
+            android:id="@+id/pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp"
+            android:backgroundTint="@color/card_1"
+            android:text="Pay Now" />
 
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationFavoriteHotel"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_weight="1"
-            app:lottie_autoPlay="false"
-            app:lottie_loop="false"
-            app:lottie_rawRes="@raw/favoriteheart" />
-
-</LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

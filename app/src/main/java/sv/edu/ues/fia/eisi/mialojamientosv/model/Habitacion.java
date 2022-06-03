@@ -8,14 +8,14 @@ public class Habitacion extends SugarRecord<Habitacion> {
     private int disponibilidad;
     private int cantBat;
     private int cantPersonas;
-    private float precioPorDia;
+    private String precioPorDia;
     private String serviciosExtra;
     Hotel idHotel;
 
     public Habitacion() {
     }
 
-    public Habitacion(int idHabitacion, int cantCamas, int disponibilidad, int cantBat, int cantPersonas, float precioPorDia, String serviciosExtra, Hotel idHotel) {
+    public Habitacion(int idHabitacion, int cantCamas, int disponibilidad, int cantBat, int cantPersonas, String precioPorDia, String serviciosExtra, Hotel idHotel) {
         this.idHabitacion = idHabitacion;
         this.cantCamas = cantCamas;
         this.disponibilidad = disponibilidad;
@@ -66,11 +66,11 @@ public class Habitacion extends SugarRecord<Habitacion> {
         this.cantPersonas = cantPersonas;
     }
 
-    public float getPrecioPorDia() {
+    public String getPrecioPorDia() {
         return precioPorDia;
     }
 
-    public void setPrecioPorDia(float precioPorDia) {
+    public void setPrecioPorDia(String precioPorDia) {
         this.precioPorDia = precioPorDia;
     }
 
