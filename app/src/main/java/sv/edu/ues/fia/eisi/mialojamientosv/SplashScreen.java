@@ -19,10 +19,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
-
-        llenarHoteles();
-        llenarPerfil();
+        ControlDB.llenarBase();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -33,36 +30,5 @@ public class SplashScreen extends AppCompatActivity {
 
     }
 
-    private void llenarHoteles() {
-        Propietario.deleteAll(Propietario.class);
-        Hotel.deleteAll(Hotel.class);
-        for (int i = 0; i < 10; i++) {
-            Hotel hotel = new Hotel();
-            Propietario propietario = new Propietario();
-            propietario.setIdPropietario("" + i);
-            propietario.setNombre("Propietario " + i);
-            propietario.save();
-            hotel.setPropietario(propietario);
-            hotel.setIdHotel(i);
-            hotel.setTitulo("Hotel " + i);
-            hotel.setImagen("https://images.trvl-media.com/hotels/20000000/19770000/19760800/19760779/3498fa05_z.jpg");
-            hotel.setDescripcion("Descripcion " + i);
-            hotel.setDireccion("Direccion " + i);
-            hotel.setLatitudH("Latitud " + i);
-            hotel.setLongitudH("Longitud " + i);
-            hotel.save();
-        }
-    }
-    private void llenarPerfil() {
-        Favorito.deleteAll(Favorito.class);
-        Perfil.deleteAll(Perfil.class);
-            Perfil perfil = new Perfil();
-            perfil.setIdPerfil(1);
-            perfil.setNombre("Perfil 1");
-            perfil.setLatitud("Latitud 1");
-            perfil.setLongitud("Longitud 1");
-            perfil.setGenero("Masculino");
-            perfil.setEmail("email");
-            perfil.save();
-    }
+
 }
