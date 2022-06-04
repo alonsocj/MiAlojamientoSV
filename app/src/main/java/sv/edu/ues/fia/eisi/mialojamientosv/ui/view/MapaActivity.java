@@ -147,7 +147,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
             currentLongitud = location.getLongitude();
 
             //Estilo de marker
-            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.marcador);
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.marker);
 
 
             //Esto realiza el Zoom a la ubicacion en donde se encuentra la persona, asignando la latitud, longitud y zoom respectivo
@@ -171,9 +171,10 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     private void getNearbyHotels() {
         StringBuilder stringBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         stringBuilder.append("location="+String.valueOf(currentLatitud)+","+String.valueOf(currentLongitud));
-        stringBuilder.append("&radius=1000");
+        stringBuilder.append("&radius=1500");
+        stringBuilder.append("&keyword=hotel");
         stringBuilder.append("&type=hotel");
-        stringBuilder.append("&key=AIzaSyCi5uoSjvHU8jxRAfRgvH7WcbWr-gylDV8"); //Cambiar esta llave, No es aceptada.
+        stringBuilder.append("&key=AIzaSyAKakDqcpt9_DzYy9SWkutteLyZ9x_1bdU"); //Cambiar esta llave, No es aceptada.
 
         String url = stringBuilder.toString();
         Object dataTrasfer[] = new Object[2];
@@ -237,6 +238,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
 
     private void getMyLocation(){
 
