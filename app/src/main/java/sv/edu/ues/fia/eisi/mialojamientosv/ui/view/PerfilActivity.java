@@ -21,6 +21,7 @@ public class PerfilActivity extends AppCompatActivity {
     ActivityPerfilBinding binding;
     BottomNavigationView navigationView;
     EditText nombre, email, genero;
+    Long idPerfil=1L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,7 @@ public class PerfilActivity extends AppCompatActivity {
         email = findViewById(R.id.EditEmailPerfil);
         genero = findViewById(R.id.EditGeneroPerfil);
 
-        Perfil perfil1=new Perfil(1,"Gustavo","10","10","masculino","gustavo@gmail.com");
-        perfil1.save();
-        Perfil perfil=Perfil.findById(Perfil.class, 1L);
+        Perfil perfil=Perfil.findById(Perfil.class, idPerfil);
 
         nombre.setText(perfil.getNombre());
         email.setText(perfil.getEmail());
