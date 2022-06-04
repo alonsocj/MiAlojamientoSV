@@ -12,6 +12,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
+
 public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
 
     String googlePlacesData;
@@ -49,6 +52,21 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
 
                 JSONObject nameObject = jsonArray.getJSONObject(i);
                 String name = nameObject.getString("name");
+                String rating = nameObject.getString("rating");
+
+                Hotel hotel = new Hotel();
+                Propietario propietario = new Propietario();
+
+                hotel.setIdHotel(1);
+                hotel.setTitulo(name);
+                hotel.setLatitudH(latitud);
+                hotel.setLongitudH(longitud);
+                hotel.setDescripcion("Estrellas: " + rating);
+                hotel.setPropietario(propietario);
+                hotel.setDescripcion("Direccion 1");
+                hotel.save();
+
+
 
                 /*Obtengo la latitud y longitud*/
                 LatLng latLng = new LatLng(Double.parseDouble(latitud), Double.parseDouble(longitud));
@@ -56,6 +74,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
                 /*Asignamos un marcador*/
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.title(name);
+                markerOptions.snippet("Estrellas: " + rating);
                 markerOptions.position(latLng);
 
                 googleMap.addMarker(markerOptions);
@@ -66,4 +85,6 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
             e.printStackTrace();
         }
     }
+
+
 }
