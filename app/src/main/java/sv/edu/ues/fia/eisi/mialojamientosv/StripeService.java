@@ -1,8 +1,6 @@
 package sv.edu.ues.fia.eisi.mialojamientosv;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -13,7 +11,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.stripe.android.PaymentConfiguration;
-import com.stripe.android.model.Customer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
