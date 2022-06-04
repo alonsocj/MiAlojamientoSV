@@ -45,7 +45,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion {
     Button pay;
     Hotel hotel;
     Perfil perfil;
-    int id = 0;
+    String id = "";
     StripeService paymentService;
     PaymentSheet paymentSheet;
 
@@ -107,12 +107,12 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion {
         if (savedInstanceState != null) {
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
-                id = Integer.parseInt(null);
+                id = null;
             } else {
-                id = extras.getInt("idHotel");
+                id = extras.getString("idHotel");
             }
         } else {
-            id = (int) getIntent().getSerializableExtra("idHotel");
+            id = (String) getIntent().getSerializableExtra("idHotel");
         }
         // Se encuentra el hotel en la base de datos
         hotel = Hotel.find(Hotel.class, "ID_HOTEL = " + id, null).get(0);

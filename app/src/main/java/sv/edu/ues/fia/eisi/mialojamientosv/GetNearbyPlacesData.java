@@ -1,6 +1,7 @@
 package sv.edu.ues.fia.eisi.mialojamientosv;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -20,6 +21,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
     String googlePlacesData;
     GoogleMap googleMap;
     String url;
+    String API = "AIzaSyAKakDqcpt9_DzYy9SWkutteLyZ9x_1bdU";
 
     @Override
     protected String doInBackground(Object... objects) {
@@ -54,16 +56,21 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
                 String name = nameObject.getString("name");
                 String rating = nameObject.getString("rating");
 
+                JSONArray photoArray = nameObject.getJSONArray("photos");
+                JSONObject photo = photoArray.getJSONObject(0);
+                String photo_reference = photo.getString("photo_reference");
+
                 Hotel hotel = new Hotel();
                 Propietario propietario = new Propietario();
 
-                hotel.setIdHotel(1);
+                hotel.setIdHotel(""+i);
                 hotel.setTitulo(name);
                 hotel.setLatitudH(latitud);
                 hotel.setLongitudH(longitud);
+                hotel.setImagen("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+photo_reference+"&key="+API);
                 hotel.setDescripcion("Estrellas: " + rating);
                 hotel.setPropietario(propietario);
-                hotel.setDescripcion("Direccion 1");
+                hotel.setDireccion("Direccion 1");
                 hotel.save();
 
 

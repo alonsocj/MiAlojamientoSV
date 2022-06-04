@@ -8,7 +8,7 @@ import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
 public class ControlDB {
 
     public static void llenarBase(){
-        llenarHoteles();
+        //llenarHoteles();
         llenarPerfil();
     }
     private static void llenarHoteles() {
@@ -21,7 +21,7 @@ public class ControlDB {
             propietario.setNombre("Propietario " + i);
             propietario.save();
             hotel.setPropietario(propietario);
-            hotel.setIdHotel(i);
+            hotel.setIdHotel(""+i);
             hotel.setTitulo("Hotel " + i);
             hotel.setImagen("https://images.trvl-media.com/hotels/20000000/19770000/19760800/19760779/3498fa05_z.jpg");
             hotel.setDescripcion("Descripcion " + i);
