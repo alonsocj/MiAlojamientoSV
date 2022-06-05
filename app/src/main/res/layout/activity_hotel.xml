@@ -274,7 +274,32 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="25dp"
-            android:text=""
+            tools:text="Inicio"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/intermedio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            android:text="-"
+            android:layout_toEndOf="@+id/tiempoReserva"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/tiempoReservaFin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            android:text="Fin"
+            android:layout_toEndOf="@id/intermedio"
+            android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="italic" />
 

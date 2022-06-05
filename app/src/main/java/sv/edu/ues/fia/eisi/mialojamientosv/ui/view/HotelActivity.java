@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,6 +33,7 @@ import com.squareup.picasso.Picasso;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
@@ -42,14 +45,16 @@ import sv.edu.ues.fia.eisi.mialojamientosv.model.Favorito;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Habitacion;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Reservacion;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.Comunicacion;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.HotelViewModel;
 
 public class HotelActivity extends AppCompatActivity implements Comunicacion, OnMapReadyCallback {
 
     ActivityHotelBinding binding;
-    TextView tvNombreHotel, tvDireccionHotel, tvDescriptionHotel, tiempoReserva, precioReserva, camas, banios, personas, servicios, valoracion;
-    String fecha;
+    TextView tvNombreHotel, tvDireccionHotel, tvDescriptionHotel, tiempoReserva, tiempoReservaFin, precioReserva, camas, banios, personas, servicios, valoracion;
+    String fecha, fechaFin, hoy;
+    String reserva, reservaFin, precio;
     ImageView ivFotoHotel;
     LottieAnimationView botonf;
     Button pay;
@@ -98,6 +103,13 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
             }
         });
 
+        tiempoReservaFin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTiempoReservaFin();
+            }
+        });
+
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +132,8 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
         pay = binding.pay;
         tiempoReserva = binding.tiempoReserva;
         tiempoReserva.setText(fecha);
+        tiempoReservaFin = binding.tiempoReservaFin;
+        tiempoReservaFin.setText(fechaFin);
         valoracion = binding.tvHotelEvaluation;
 
     }
@@ -158,7 +172,8 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
             tvDireccionHotel.setText(hotel.getDireccion());
             valoracion.setText(hotel.getEvaluaciones());
             loadImageView(hotel.getImagen(), ivFotoHotel);
-            precioReserva.setText("$" + precioFinal.reverse().toString() + " noche");
+            this.precio = precioFinal.reverse().toString();
+            precioReserva.setText("$" + this.precio + " noche");
 
             paymentService = new StripeService(this, Integer.parseInt(habitacion.getPrecioPorDia()));
         }
@@ -169,6 +184,31 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
 
     private void onPaymentResult(PaymentSheetResult paymentSheetResult) {
         if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
+            int diaI, diaF;
+            int cantDias;
+            Log.v("Fecha: ", reservaFin);
+            String[] fechaI = reserva.split("/", 5);
+            String[] fechaF = reservaFin.split("/", 5);
+            int mesI = Integer.parseInt(fechaI[1]);
+            int mesF = Integer.parseInt(fechaF[1]);
+            if (mesI == mesF) {
+                diaI = Integer.parseInt(fechaI[0]);
+                diaF = Integer.parseInt(fechaF[0]);
+                cantDias = diaF - diaI;
+            } else {
+                diaI = Integer.parseInt(fechaI[0]);
+                diaF = Integer.parseInt(fechaF[0]);
+                cantDias = (diaF - diaI) + (30 - mesF) + (mesI - 1);
+            }
+
+            Reservacion reservacion = new Reservacion();
+            reservacion.setIdHotel(hotel);
+            reservacion.setIdPerfil(perfil);
+            reservacion.setFechaInicio(reserva);
+            reservacion.setFechaFin(reservaFin);
+            reservacion.setFechaRegistro(hoy);
+            reservacion.setPrecioTotal(cantDias * (Float.parseFloat(this.precio)));
+            reservacion.save();
             Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
         }
     }
@@ -210,7 +250,40 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
     }
 
     private void setTiempoReserva() {
+        Calendar calendar = Calendar.getInstance();
+        int anio, mes, dia;
+        anio = calendar.get(Calendar.YEAR);
+        mes = calendar.get(Calendar.MONTH);
+        dia = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog date = new DatePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                fecha = selectMonth(month) + " " + dayOfMonth;
+                reserva = dayOfMonth + "/" + month + "/" + year;
+                tiempoReserva.setText(fecha);
+            }
+        }, anio, mes, dia);
+        date.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        date.show();
 
+    }
+
+    private void setTiempoReservaFin() {
+        Calendar calendar = Calendar.getInstance();
+        int anio, mes, dia;
+        anio = calendar.get(Calendar.YEAR);
+        mes = calendar.get(Calendar.MONTH);
+        dia = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog date = new DatePickerDialog(this, android.R.style.Theme_DeviceDefault_Light_Dialog, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                fechaFin = selectMonth(month) + " " + dayOfMonth;
+                reservaFin = dayOfMonth + "/" + month + "/" + year;
+                tiempoReservaFin.setText(fechaFin);
+            }
+        }, anio, mes, dia);
+        date.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        date.show();
     }
 
     private void setTimeinit() {
@@ -219,7 +292,11 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
         final int month = calendar.get(Calendar.MONTH);
         String monthString = selectMonth(month);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
-        fecha = (monthString) + " " + day + "-" + (day + 1);
+        fecha = (monthString) + " " + day;
+        fechaFin = (monthString) + " " + (day + 1);
+        hoy = day + "/" + month + "/" + year;
+        reserva = day + "/" + month + "/" + year;
+        reservaFin = (day + 1) + "/" + month + "/" + year;
     }
 
 
@@ -280,14 +357,14 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
-        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(HotelActivity.this,R.raw.stylemap));
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(HotelActivity.this, R.raw.stylemap));
 
         // Se encuentra el hotel en la base de datos
         hotel = Hotel.find(Hotel.class, "ID_HOTEL = '" + id + "'", null).get(0);
         if (hotel != null) {
             LatLng ubicacion = new LatLng(Double.parseDouble(hotel.getLatitudH()), Double.parseDouble(hotel.getLongitudH()));
             map.addMarker(new MarkerOptions().position(ubicacion).title(hotel.getTitulo()));
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacion,15f));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacion, 15f));
         }
 
     }
