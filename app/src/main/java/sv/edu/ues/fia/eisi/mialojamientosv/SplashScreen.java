@@ -11,6 +11,7 @@ import sv.edu.ues.fia.eisi.mialojamientosv.model.Favorito;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
+import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.MapaActivity;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashScreen extends AppCompatActivity {
@@ -23,7 +24,7 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashScreen.this, MainActivity.class));
+                startActivity(new Intent(SplashScreen.this, MapaActivity.class));
                 finish();
             }
         }, 5195);

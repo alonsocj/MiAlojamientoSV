@@ -57,15 +57,13 @@ public class FavoritosActivity extends AppCompatActivity {
                     hoteles.add(favoritos.get(i).getHotel());
                 }
                 //manager de recycler
-                Toast.makeText(view.getContext(), "AAA", Toast.LENGTH_LONG).show();
                 listHoteles.setLayoutManager(new LinearLayoutManager(this));
                 ListHotelAdapter adapter = new ListHotelAdapter(hoteles);
                 listHoteles.setAdapter(adapter);
             }else{
-                Toast.makeText(view.getContext(), "nada", Toast.LENGTH_LONG).show();
             }
         }catch (Exception e){
-            Toast.makeText(view.getContext(), "hola", Toast.LENGTH_LONG).show();
+            Toast.makeText(view.getContext(), "Ocurrio un error", Toast.LENGTH_LONG).show();
         }
 
         navigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -77,6 +75,7 @@ public class FavoritosActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @SuppressLint("NonConstantResourceId")
     public void setActivity(@NonNull MenuItem item) {
