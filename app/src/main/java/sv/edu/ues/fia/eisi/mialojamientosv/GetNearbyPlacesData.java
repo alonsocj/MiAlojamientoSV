@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Chat;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Habitacion;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
@@ -83,6 +84,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
                     Hotel hotel = new Hotel();
                     Propietario propietario = new Propietario();
                     Habitacion habitacion = new Habitacion();
+                    Chat chat = new Chat();
 
                     //Guarda los datos de la habitacion en la base
                     if ((i % 2) == 0) {
@@ -91,7 +93,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
                         habitacion.setIdHabitacion(1);
                         habitacion.setServiciosExtra("Television , Cocina , Aire Acondicionado");
                         habitacion.setCantPersonas(2);
-                    }else{
+                    } else {
                         habitacion.setCantCamas(1);
                         habitacion.setCantBat(1);
                         habitacion.setIdHabitacion(1);
@@ -111,6 +113,12 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
                     hotel.setPropietario(propietario);
                     hotel.setDireccion(direccion);
                     hotel.save();
+
+                    chat.setIdChat(idHotel);
+                    chat.setNombre(name);
+                    chat.setEmisor(1);
+                    chat.setReceptor(1);
+                    chat.save();
 
                     habitacion.setIdHotel(hotel);
                     habitacion.save();
