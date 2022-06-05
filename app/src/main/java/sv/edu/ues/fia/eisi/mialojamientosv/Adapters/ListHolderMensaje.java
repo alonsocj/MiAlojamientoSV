@@ -5,12 +5,12 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 
-public class HolderMensaje extends RecyclerView.ViewHolder {
+public class ListHolderMensaje extends RecyclerView.ViewHolder {
     private TextView nombre;
     private TextView mensaje;
     private TextView hora;
 
-    public HolderMensaje(View itemView) {
+    public ListHolderMensaje(View itemView) {
         super(itemView);
         nombre = (TextView) itemView.findViewById(R.id.usuario);
         mensaje = (TextView) itemView.findViewById(R.id.mensaje);
