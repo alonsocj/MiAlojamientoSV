@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.util.Collections;
 import java.util.List;
 
 import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListHotelAdapter;
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setSelectedItemId(R.id.explore);
         //lista de todoos los hoteles
         hoteles = Hotel.listAll(Hotel.class);
+        Collections.reverse(hoteles);
         //manager de recycler
         listHoteles.setLayoutManager(new LinearLayoutManager(this));
 
