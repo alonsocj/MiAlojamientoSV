@@ -1,11 +1,13 @@
 package sv.edu.ues.fia.eisi.mialojamientosv;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +15,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Habitacion;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
 
@@ -43,10 +46,12 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
     protected void onPostExecute(String s) {
         try{
             JSONObject jsonObject = new JSONObject(s);
+
             JSONArray jsonArray = jsonObject.getJSONArray("results"); /*Extraido de la api de Google*/
 
             for (int i=0; i<jsonArray.length(); i++){
                 JSONObject datosextraidos = jsonArray.getJSONObject(i);
+
                 JSONObject locationObj = datosextraidos.getJSONObject("geometry").getJSONObject("location");
 
                 String latitud = locationObj.getString("lat");
@@ -55,35 +60,73 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
                 JSONObject nameObject = jsonArray.getJSONObject(i);
                 String name = nameObject.getString("name");
                 String rating = nameObject.getString("rating");
+                String direccion = nameObject.getString("vicinity");
+                String idHotel = nameObject.getString("place_id");
+
+                int precio = nameObject.getInt("user_ratings_total");
+
 
                 JSONArray photoArray = nameObject.getJSONArray("photos");
                 JSONObject photo = photoArray.getJSONObject(0);
                 String photo_reference = photo.getString("photo_reference");
 
-                Hotel hotel = new Hotel();
-                Propietario propietario = new Propietario();
+                Hotel actual = null;
 
-                hotel.setIdHotel(""+i);
-                hotel.setTitulo(name);
-                hotel.setLatitudH(latitud);
-                hotel.setLongitudH(longitud);
-                hotel.setImagen("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+photo_reference+"&key="+API);
-                hotel.setDescripcion("Estrellas: " + rating);
-                hotel.setPropietario(propietario);
-                hotel.setDireccion("Direccion 1");
-                hotel.save();
+                try{
+                   actual = Hotel.find(Hotel.class, "ID_HOTEL = '" + idHotel +"'", null).get(0);
+                }catch (Exception exception){
+                    exception.printStackTrace();
+                }
+                if(actual != null){
 
+                }else{
+                    Hotel hotel = new Hotel();
+                    Propietario propietario = new Propietario();
+                    Habitacion habitacion = new Habitacion();
 
+                    //Guarda los datos de la habitacion en la base
+                    habitacion.setCantCamas(2);
+                    habitacion.setCantBat(1);
+                    habitacion.setIdHabitacion(1);
+                    habitacion.setServiciosExtra("Television");
+                    habitacion.setCantPersonas(2);
+                    habitacion.setDisponibilidad(1);
+                    habitacion.setPrecioPorDia(String.valueOf(precio * 10));
+
+                    //Guarda los datos del hotel en la base
+                    hotel.setIdHotel(idHotel);
+                    hotel.setTitulo(name);
+                    hotel.setLatitudH(latitud);
+                    hotel.setLongitudH(longitud);
+                    hotel.setImagen("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+photo_reference+"&key="+API);
+                    hotel.setDescripcion("Estrellas: " + rating);
+                    hotel.setPropietario(propietario);
+                    hotel.setDireccion(direccion);
+                    hotel.save();
+
+                    habitacion.setIdHotel(hotel);
+                    habitacion.save();
+
+                }
 
                 /*Obtengo la latitud y longitud*/
                 LatLng latLng = new LatLng(Double.parseDouble(latitud), Double.parseDouble(longitud));
 
                 /*Asignamos un marcador*/
+
+               /* Marker marcador = googleMap.addMarker(
+                 new MarkerOptions()
+                         .title(name)
+                         .position(latLng)
+                          .snippet(rating + " ⭐ ," + direccion)
+                );*/
+
+                /*marcador.showInfoWindow();*/
+
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.title(name);
-                markerOptions.snippet("Estrellas: " + rating);
+                markerOptions.snippet(rating + " ⭐ ," + direccion);
                 markerOptions.position(latLng);
-
                 googleMap.addMarker(markerOptions);
 
             }

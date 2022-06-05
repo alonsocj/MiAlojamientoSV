@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -36,6 +37,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -47,11 +50,13 @@ import sv.edu.ues.fia.eisi.mialojamientosv.GetNearbyPlacesData;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityMapaBinding;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.HotelViewModel;
 
 public class MapaActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, GoogleMap.OnInfoWindowClickListener{
 
     private ActivityMapaBinding binding;
     BottomNavigationView navigationView;
@@ -134,6 +139,8 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(@NonNull GoogleMap googleMap) {
         //Pinta el mapa en la pantalla
         nmap = googleMap;
+        nmap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.stylemap));
+        nmap.setOnInfoWindowClickListener(this);
     }
 
     @Override
@@ -148,7 +155,6 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
 
             //Estilo de marker
             BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.marker);
-
 
             //Esto realiza el Zoom a la ubicacion en donde se encuentra la persona, asignando la latitud, longitud y zoom respectivo
             nmap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitud, currentLongitud), 15.0f));
@@ -175,7 +181,6 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         stringBuilder.append("&keyword=hotel");
         stringBuilder.append("&type=hotel");
         stringBuilder.append("&key=AIzaSyAKakDqcpt9_DzYy9SWkutteLyZ9x_1bdU"); //Cambiar esta llave, No es aceptada.
-
         String url = stringBuilder.toString();
         Object dataTrasfer[] = new Object[2];
         dataTrasfer[0] = nmap;
@@ -302,4 +307,26 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    @Override
+    public void onInfoWindowClick(@NonNull Marker marker) {
+
+        Hotel actual = null;
+
+        try{
+            actual = Hotel.find(Hotel.class, "TITULO = '" + marker.getTitle() +"'", null).get(0);
+        }catch (Exception exception){
+            exception.printStackTrace();
+        }
+
+        if(actual == null){
+
+        }else{
+            Context ctx = this;
+            Intent intent = new Intent(ctx, HotelActivity.class);
+            intent.putExtra("idHotel", actual.getIdHotel());
+            ctx.startActivity(intent);
+        }
+
+
+    }
 }
