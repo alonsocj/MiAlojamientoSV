@@ -3,7 +3,7 @@ package sv.edu.ues.fia.eisi.mialojamientosv.model;
 import com.orm.SugarRecord;
 
 public class Hotel extends SugarRecord<Hotel> {
-    private int idHotel;
+    private String idHotel;
     private String titulo;
     private String imagen;
     private String descripcion;
@@ -15,7 +15,7 @@ public class Hotel extends SugarRecord<Hotel> {
     public Hotel() {
     }
 
-    public Hotel(int idHotel, String titulo, String imagen, String descripcion, String direccion, String latitudH, String longitudH, Propietario propietario) {
+    public Hotel(String idHotel, String titulo, String imagen, String descripcion, String direccion, String latitudH, String longitudH, Propietario propietario) {
         this.idHotel = idHotel;
         this.titulo = titulo;
         this.imagen = imagen;
@@ -26,11 +26,11 @@ public class Hotel extends SugarRecord<Hotel> {
         this.propietario = propietario;
     }
 
-    public int getIdHotel() {
+    public String getIdHotel() {
         return idHotel;
     }
 
-    public void setIdHotel(int idHotel) {
+    public void setIdHotel(String idHotel) {
         this.idHotel = idHotel;
     }
 
