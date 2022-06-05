@@ -2,7 +2,6 @@ package sv.edu.ues.fia.eisi.mialojamientosv.ui.view;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -47,7 +46,6 @@ import sv.edu.ues.fia.eisi.mialojamientosv.GetNearbyPlacesData;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityMapaBinding;
-import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.HotelViewModel;
 
 public class MapaActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -120,7 +118,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
             case R.id.mapa:
                 break;
             case R.id.mensajes:
-                startActivity(new Intent(MapaActivity.this, MensajesActivity.class));
+                startActivity(new Intent(MapaActivity.this, ChatsActivity.class));
                 overridePendingTransition(0, 0);
                 break;
             case R.id.perfil:

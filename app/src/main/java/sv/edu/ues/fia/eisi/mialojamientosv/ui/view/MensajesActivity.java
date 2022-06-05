@@ -1,75 +1,198 @@
-
 package sv.edu.ues.fia.eisi.mialojamientosv.ui.view;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.AdapterMensajes;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Mensaje;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
-import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityMensajesBinding;
 
 public class MensajesActivity extends AppCompatActivity {
 
-    ActivityMensajesBinding binding;
-    BottomNavigationView navigationView;
+    private EditText mensaje;
+    private TextView hotel,nombre;
+    private Button enviar, audio;
+    private AdapterMensajes adapter;
+    private RecyclerView rvMensajes;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+
+    //Texto a Voz
+    private TextToSpeech textToSpeech;
+    private boolean isLoaded = false;
+
+    //Este es se utiliza para grabar voz
+    private static final int REQ_CODE_SPEECH_INPUT = 100;
+
+    String idPerfil="Gustavo Pineda";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMensajesBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(R.layout.activity_mensajes);
 
-        navigationView = binding.bottomNavigation;
+        mensaje = findViewById(R.id.txtMensaje);
+        hotel = findViewById(R.id.contactoMensaje);
+        enviar = findViewById(R.id.btnEnviar);
+        audio = findViewById(R.id.btnAudio);
+        rvMensajes=findViewById(R.id.rvMensajes);
 
-        navigationView.setSelectedItemId(R.id.mensajes);
+        //Obteniendo el codigo del chat
+        Bundle datosExtras=getIntent().getExtras();
+        String codigoChat= datosExtras.getString("codigoChat");
+        String nombreHotel=datosExtras.getString("nombreHotel");
 
-        /*
-         * BadgeDrawable badgeDrawable = navigationView.getOrCreateBadge(R.id.mensajes);
-         * badgeDrawable.setVisible(true);
-         * badgeDrawable.setNumber(4);
-         */
+        //Inicializamos la base de datos
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference(codigoChat);  //Sala de Chat, donde se "Guardaran" los mensajes
 
-        navigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @SuppressLint("NonConstantResourceId")
+        //Inicializando el Chat
+        hotel.setText(nombreHotel);
+
+        adapter =new AdapterMensajes(this);
+
+        LinearLayoutManager linear=new LinearLayoutManager(this);
+        rvMensajes.setLayoutManager(linear);
+        rvMensajes.setAdapter(adapter);
+
+        enviar.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                setActivity(item);
-                return true;
+            public void onClick(View view) {
+                String validacion=mensaje.getText().toString();
+                validacion=validacion.replace(" ","");
+                if(validacion.equals("")){
+                    mensaje.setText("");
+                    mensaje.setHint("Porfavor dígite un mensaje a enviar");
+                }else {
+                    databaseReference.push().setValue(new Mensaje(mensaje.getText().toString(),idPerfil.toString(),obtenerHora()+"    "+obtenerFecha()));
+                    mensaje.setText("");
+                    mensaje.setHint("Escribe un mensaje");
+                }
+            }
+        });
+
+        audio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Metodo donde se graba la voz y se guarda en la base
+                iniciarEntradaVoz();
+            }
+        });
+
+        //Cuando el adaptador adquiere un objeto
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                setScrollbar();
+            }
+        });
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //Cuando agreguemos un dato a la base de datos, lo agregara a la lista de chat
+                Mensaje m = dataSnapshot.getValue(Mensaje.class);
+                adapter.addMensaje(m);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
+    //se graba la voz y si se realiza pasa al siguiente metodo
+    private void iniciarEntradaVoz() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Habla para grabar el mensaje");
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        }catch (ActivityNotFoundException e){
 
-    @SuppressLint("NonConstantResourceId")
-    public void setActivity(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.explore:
-                startActivity(new Intent(MensajesActivity.this, MainActivity.class));
-                overridePendingTransition(0, 0);
-                break;
-            case R.id.favoritos:
-                startActivity(new Intent(MensajesActivity.this, FavoritosActivity.class));
-                overridePendingTransition(0, 0);
-                break;
-            case R.id.mapa:
-                startActivity(new Intent(MensajesActivity.this, MapaActivity.class));
-                overridePendingTransition(0, 0);
-                break;
-            case R.id.mensajes:
-                break;
-            case R.id.perfil:
-                startActivity(new Intent(MensajesActivity.this, PerfilActivity.class));
-                overridePendingTransition(0, 0);
-                break;
         }
     }
+    //Guarda el texto en el textarea y lo agrega el mensaje
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case REQ_CODE_SPEECH_INPUT:{
+                if(resultCode==RESULT_OK && null != data ){
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    mensaje.setText(result.get(0));
+                    databaseReference.push().setValue(new Mensaje(mensaje.getText().toString(),idPerfil.toString(), obtenerHora()+"    "+obtenerFecha()));
+                    mensaje.setText("");
+                    int speech = textToSpeech.speak("Has enviado un mensaje", TextToSpeech.QUEUE_FLUSH, null);
+                }
+                break;
+            }
+        }
+    }
+    private void setScrollbar(){
+        rvMensajes.scrollToPosition(adapter.getItemCount()-1);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String obtenerHora(){
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        SimpleDateFormat sdf= new SimpleDateFormat("hh:mm a");
+        sdf.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().toZoneId().toString()));
+        return sdf.format(date);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String obtenerFecha(){
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setTimeZone(TimeZone.getTimeZone(TimeZone.getDefault().toZoneId().toString()));
+        return sdf.format(date);
+    }
+
 }

@@ -7,10 +7,14 @@
     <string name="mensajes">Mensajes</string>
 
     <!--Perfil-->
-    <string name="tituloPerfil">Usuario</string>
+    <string name="tituloPerfil">Perfil</string>
     <string name="nombrePerfil">Nombre</string>
     <string name="generoPerfil">Género</string>
     <string name="emailPerfil">Email</string>
+
+    <!--Chat-->
+    <string name="tituloChat">Contactos</string>
+    <string name="nombreChat">Nombre Hotel</string>
 
     <!--Login-->
     <string name="tituloLogin">Login</string>
