@@ -30,6 +30,7 @@ import sv.edu.ues.fia.eisi.mialojamientosv.SplashScreen;
 import sv.edu.ues.fia.eisi.mialojamientosv.StripeService;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityHotelBinding;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Favorito;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Habitacion;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.Comunicacion;
@@ -38,7 +39,7 @@ import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.HotelViewModel;
 public class HotelActivity extends AppCompatActivity implements Comunicacion {
 
     ActivityHotelBinding binding;
-    TextView tvNombreHotel, tvDireccionHotel, tvDescriptionHotel, tiempoReserva;
+    TextView tvNombreHotel, tvDireccionHotel, tvDescriptionHotel, tiempoReserva, precioReserva, camas, banios, personas, servicios;
     String fecha;
     ImageView ivFotoHotel;
     LottieAnimationView botonf;
@@ -97,6 +98,11 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion {
         tvDireccionHotel = binding.tvAddress;
         tvDescriptionHotel = binding.tvHotelDescription;
         ivFotoHotel = binding.ivHotel;
+        precioReserva = binding.precioReserva;
+        camas = binding.cantCamas;
+        banios = binding.cantBanios;
+        personas = binding.cantPersonas;
+        servicios = binding.extra;
         pay = binding.pay;
         tiempoReserva = binding.tiempoReserva;
         tiempoReserva.setText(fecha);
@@ -118,13 +124,27 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion {
         hotel = Hotel.find(Hotel.class, "ID_HOTEL = '" + id + "'", null).get(0);
         // Si es diferente de null llena los campos
         if (hotel != null) {
+            Habitacion habitacion = Habitacion.find(Habitacion.class, "ID_HOTEL = '" + hotel.getId() + "'", null).get(0);
+            String[] precioCalc = habitacion.getPrecioPorDia().split("");
+            String precio = "";
+            for (int i = precioCalc.length - 1; i >= 0; i--) {
+                if (i == precioCalc.length - 3) {
+                    precio += ".";
+                }
+                precio += precioCalc[i];
+            }
+            camas.setText("" + habitacion.getCantCamas());
+            banios.setText("" + habitacion.getCantBat());
+            personas.setText("" + habitacion.getCantPersonas());
+            servicios.setText(habitacion.getServiciosExtra());
+            StringBuilder precioFinal = new StringBuilder(precio);
             tvNombreHotel.setText(hotel.getTitulo());
             tvDescriptionHotel.setText(hotel.getDescripcion());
             tvDireccionHotel.setText(hotel.getDireccion());
             loadImageView(hotel.getImagen(), ivFotoHotel);
+            precioReserva.setText("$" + precioFinal.reverse().toString() + " noche");
 
-
-            paymentService = new StripeService(this, 9000);
+            paymentService = new StripeService(this, Integer.parseInt(habitacion.getPrecioPorDia()));
         }
 
 
@@ -143,7 +163,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion {
 
     private void paymentFlow() {
         paymentSheet.presentWithPaymentIntent(
-                paymentService.getFinalClientSecret(), new PaymentSheet.Configuration("Pagar a " + hotel.getTitulo(),
+                paymentService.getFinalClientSecret(), new PaymentSheet.Configuration(hotel.getTitulo(),
                         new PaymentSheet.CustomerConfiguration(paymentService.getFinalCustomerID(), paymentService.getFinalEphimeral()))
         );
     }

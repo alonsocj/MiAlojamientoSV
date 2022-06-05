@@ -7,22 +7,23 @@
     android:orientation="vertical"
     tools:context=".ui.view.HotelActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/infoHotel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_white"
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/imageContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/ivHotel"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:scaleType="fitXY" />
+                android:layout_height="320dp"
+                android:scaleType="fitXY"
+                tools:background="@color/card_1" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animationFavoriteHotel"
@@ -35,40 +36,165 @@
                 app:lottie_loop="false"
                 app:lottie_rawRes="@raw/favoriteheart" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="180dp"
-                android:background="@drawable/background_shape" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/especificacionesHotel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageContainer">
 
             <TextView
                 android:id="@+id/tvHotel_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="180dp"
-                android:textColor="@color/white"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 tools:text="@string/hotel_title" />
 
+            <TextView
+                android:id="@+id/tvHotel_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvHotel_name"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                tools:text="@string/hotel_description" />
+
+            <TextView
+                android:id="@+id/tvAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvHotel_description"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:text="@string/hotel_address" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tvAddress"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_shape" />
+
+            <TextView
+                android:id="@+id/Beneficios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Ofrece"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/camas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Beneficios"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Cantidad de Camas: "
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/cantCamas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Beneficios"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/camas"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:text="0" />
+
+            <TextView
+                android:id="@+id/banios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/camas"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Cantidad de baños:"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/cantBanios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cantCamas"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/banios"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:text="0" />
+
+            <TextView
+                android:id="@+id/personas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/banios"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Cantidad de personas: "
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/cantPersonas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cantBanios"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/personas"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:text="0" />
+
+            <TextView
+                android:id="@+id/servicios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/personas"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Servicios extra: "
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/extra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cantPersonas"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/servicios"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:text="-" />
+
+
         </RelativeLayout>
-
-        <TextView
-            android:id="@+id/tvHotel_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="17sp"
-            tools:text="@string/hotel_description" />
-
-        <TextView
-            android:id="@+id/tvAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textSize="15sp"
-            tools:text="@string/hotel_address" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/payment_container"
@@ -76,15 +202,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/round_corner"
+        android:backgroundTint="@color/black"
         android:elevation="2dp"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/precioReserva"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
             android:text="$150.00 noche"
+            android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -104,7 +233,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="15dp"
-            android:backgroundTint="@color/card_1"
+            android:backgroundTint="@color/white"
             android:text="Pay Now" />
 
     </RelativeLayout>
