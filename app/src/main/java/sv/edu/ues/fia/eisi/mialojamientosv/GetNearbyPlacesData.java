@@ -63,7 +63,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
                 String rating = nameObject.getString("rating");
                 String direccion = nameObject.getString("vicinity");
                 String idHotel = nameObject.getString("place_id");
-
+                String evaluaciones = nameObject.getString("user_ratings_total");
                 int precio = nameObject.getInt("user_ratings_total");
 
 
@@ -110,6 +110,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
                     hotel.setLongitudH(longitud);
                     hotel.setImagen("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=" + photo_reference + "&key=" + API);
                     hotel.setDescripcion("Estrellas: " + rating);
+                    hotel.setEvaluaciones("Evaluaciones: " + evaluaciones);
                     hotel.setPropietario(propietario);
                     hotel.setDireccion(direccion);
                     hotel.save();

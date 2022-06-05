@@ -25,7 +25,11 @@
 
     <string name="hotel_title">Titulo de Hotel</string>
     <string name="hotel_description">Description Hotel</string>
+    <string name="hotel_valoraciones">Evaluacion</string>
     <string name="hotel_address">Direccion de el hotel</string>
     <string name="noti">Notificaciones</string>
+
+    <!--Mapa en Hotel-->
+    <string name="teencontraras">Dónde estaras</string>
 
 </resources>
