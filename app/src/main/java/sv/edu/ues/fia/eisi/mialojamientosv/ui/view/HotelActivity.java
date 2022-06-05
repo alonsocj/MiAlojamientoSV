@@ -1,7 +1,9 @@
 package sv.edu.ues.fia.eisi.mialojamientosv.ui.view;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -18,6 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
@@ -36,10 +45,10 @@ import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.Comunicacion;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.HotelViewModel;
 
-public class HotelActivity extends AppCompatActivity implements Comunicacion {
+public class HotelActivity extends AppCompatActivity implements Comunicacion, OnMapReadyCallback {
 
     ActivityHotelBinding binding;
-    TextView tvNombreHotel, tvDireccionHotel, tvDescriptionHotel, tiempoReserva, precioReserva, camas, banios, personas, servicios;
+    TextView tvNombreHotel, tvDireccionHotel, tvDescriptionHotel, tiempoReserva, precioReserva, camas, banios, personas, servicios, valoracion;
     String fecha;
     ImageView ivFotoHotel;
     LottieAnimationView botonf;
@@ -49,6 +58,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion {
     String id = "";
     StripeService paymentService;
     PaymentSheet paymentSheet;
+    GoogleMap map;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -61,6 +71,10 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion {
         elementsInit();
         setTimeinit();
         favAnimation();
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map2);
+        mapFragment.getMapAsync(this);
 
         infoHotelActual(savedInstanceState);
 
@@ -106,6 +120,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion {
         pay = binding.pay;
         tiempoReserva = binding.tiempoReserva;
         tiempoReserva.setText(fecha);
+        valoracion = binding.tvHotelEvaluation;
 
     }
 
@@ -141,6 +156,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion {
             tvNombreHotel.setText(hotel.getTitulo());
             tvDescriptionHotel.setText(hotel.getDescripcion());
             tvDireccionHotel.setText(hotel.getDireccion());
+            valoracion.setText(hotel.getEvaluaciones());
             loadImageView(hotel.getImagen(), ivFotoHotel);
             precioReserva.setText("$" + precioFinal.reverse().toString() + " noche");
 
@@ -259,5 +275,20 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion {
                 break;
         }
         return monthString;
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        map = googleMap;
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(HotelActivity.this,R.raw.stylemap));
+
+        // Se encuentra el hotel en la base de datos
+        hotel = Hotel.find(Hotel.class, "ID_HOTEL = '" + id + "'", null).get(0);
+        if (hotel != null) {
+            LatLng ubicacion = new LatLng(Double.parseDouble(hotel.getLatitudH()), Double.parseDouble(hotel.getLongitudH()));
+            map.addMarker(new MarkerOptions().position(ubicacion).title(hotel.getTitulo()));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacion,15f));
+        }
+
     }
 }
