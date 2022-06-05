@@ -91,7 +91,7 @@ public class FavoritosActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 break;
             case R.id.mensajes:
-                startActivity(new Intent(FavoritosActivity.this, MensajesActivity.class));
+                startActivity(new Intent(FavoritosActivity.this, ChatsActivity.class));
                 overridePendingTransition(0, 0);
                 break;
             case R.id.perfil:
