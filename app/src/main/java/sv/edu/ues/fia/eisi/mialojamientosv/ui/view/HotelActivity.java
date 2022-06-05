@@ -115,7 +115,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion {
             id = (String) getIntent().getSerializableExtra("idHotel");
         }
         // Se encuentra el hotel en la base de datos
-        hotel = Hotel.find(Hotel.class, "ID_HOTEL = " + id, null).get(0);
+        hotel = Hotel.find(Hotel.class, "ID_HOTEL = '" + id + "'", null).get(0);
         // Si es diferente de null llena los campos
         if (hotel != null) {
             tvNombreHotel.setText(hotel.getTitulo());
