@@ -5,13 +5,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,31 +20,31 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.AdapterMensajes;
+import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListMensajesAdapter;
+import sv.edu.ues.fia.eisi.mialojamientosv.TextToSpeechManager;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Mensaje;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 
-public class MensajesActivity extends AppCompatActivity {
+public class MensajesActivity extends AppCompatActivity{
 
     private EditText mensaje;
     private TextView hotel,nombre;
     private Button enviar, audio;
-    private AdapterMensajes adapter;
+    private ListMensajesAdapter adapter;
     private RecyclerView rvMensajes;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
+    //Inicializamos la entrada de texto a voz
     //Texto a Voz
-    private TextToSpeech textToSpeech;
-    private boolean isLoaded = false;
+    TextToSpeechManager textToSpeech;
+    private boolean cargado = false;
 
     //Este es se utiliza para grabar voz
     private static final int REQ_CODE_SPEECH_INPUT = 100;
@@ -64,6 +62,10 @@ public class MensajesActivity extends AppCompatActivity {
         audio = findViewById(R.id.btnAudio);
         rvMensajes=findViewById(R.id.rvMensajes);
 
+        //Inicializando TextToSpeech
+        textToSpeech=new TextToSpeechManager();
+        textToSpeech.init(this);
+
         //Obteniendo el codigo del chat
         Bundle datosExtras=getIntent().getExtras();
         String codigoChat= datosExtras.getString("codigoChat");
@@ -76,8 +78,7 @@ public class MensajesActivity extends AppCompatActivity {
         //Inicializando el Chat
         hotel.setText(nombreHotel);
 
-        adapter =new AdapterMensajes(this);
-
+        adapter =new ListMensajesAdapter(this);
         LinearLayoutManager linear=new LinearLayoutManager(this);
         rvMensajes.setLayoutManager(linear);
         rvMensajes.setAdapter(adapter);
@@ -90,11 +91,12 @@ public class MensajesActivity extends AppCompatActivity {
                 validacion=validacion.replace(" ","");
                 if(validacion.equals("")){
                     mensaje.setText("");
-                    mensaje.setHint("Porfavor dígite un mensaje a enviar");
+                    mensaje.setHint("Porfavor dígite un mensaje");
                 }else {
                     databaseReference.push().setValue(new Mensaje(mensaje.getText().toString(),idPerfil.toString(),obtenerHora()+"    "+obtenerFecha()));
                     mensaje.setText("");
                     mensaje.setHint("Escribe un mensaje");
+                    textToSpeech.iniciarCola("Mensaje Enviado");
                 }
             }
         });
@@ -115,6 +117,7 @@ public class MensajesActivity extends AppCompatActivity {
                 setScrollbar();
             }
         });
+
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -166,9 +169,6 @@ public class MensajesActivity extends AppCompatActivity {
                 if(resultCode==RESULT_OK && null != data ){
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     mensaje.setText(result.get(0));
-                    databaseReference.push().setValue(new Mensaje(mensaje.getText().toString(),idPerfil.toString(), obtenerHora()+"    "+obtenerFecha()));
-                    mensaje.setText("");
-                    int speech = textToSpeech.speak("Has enviado un mensaje", TextToSpeech.QUEUE_FLUSH, null);
                 }
                 break;
             }
@@ -195,4 +195,9 @@ public class MensajesActivity extends AppCompatActivity {
         return sdf.format(date);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        textToSpeech.apagar();
+    }
 }

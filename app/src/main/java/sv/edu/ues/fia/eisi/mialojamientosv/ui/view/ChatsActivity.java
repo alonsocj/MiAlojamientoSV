@@ -16,7 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
 import java.util.List;
-import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListChatsAdaptador;
+import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListChatsAdapter;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityChatsBinding;
@@ -52,8 +52,9 @@ public class ChatsActivity extends AppCompatActivity {
            }
         }
 
+        //Cargamos los chats del perfil en pantalla
         listaChats = (ListView) findViewById(R.id.ListadoChats);
-        listaChats.setAdapter(new ListChatsAdaptador(this, R.layout.list_chat, listadoChatUsuario){
+        listaChats.setAdapter(new ListChatsAdapter(this, R.layout.list_chat, listadoChatUsuario){
             @Override
             public void onEntrada(Object entrada, View view) {
                 if (entrada != null) {
@@ -64,6 +65,7 @@ public class ChatsActivity extends AppCompatActivity {
             }
         });
 
+        //Abrimos la pantalla de los mensajes del chat correspondiente
         listaChats.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> pariente, View view, int posicion, long id) {
@@ -72,9 +74,6 @@ public class ChatsActivity extends AppCompatActivity {
                 i.putExtra("codigoChat", elegido.getIdChat());
                 i.putExtra("nombreHotel", elegido.getNombre());
                 startActivity(i);
-                CharSequence texto = "Seleccionado: " + elegido.getNombre()+ + elegido.getEmisor()+ elegido.getReceptor();
-                Toast toast = Toast.makeText(ChatsActivity.this, texto, Toast.LENGTH_LONG);
-                toast.show();
             }
         });
 

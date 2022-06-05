@@ -14,13 +14,13 @@ import sv.edu.ues.fia.eisi.mialojamientosv.model.Chat;
 /** Adaptador de ListView universal, para www.jarroba.com
  * @author Ramon Invarato Menéndez
  */
-public abstract class ListChatsAdaptador extends BaseAdapter {
+public abstract class ListChatsAdapter extends BaseAdapter {
 
     private List<Chat> chats;
     private int R_layout_IdView;
     private Context contexto;
 
-    public ListChatsAdaptador(Context contexto, int R_layout_IdView, List<Chat> chats) {
+    public ListChatsAdapter(Context contexto, int R_layout_IdView, List<Chat> chats) {
         super();
         this.contexto = contexto;
         this.chats = chats;

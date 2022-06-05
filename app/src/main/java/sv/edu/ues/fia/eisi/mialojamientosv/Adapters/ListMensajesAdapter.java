@@ -12,11 +12,11 @@ import java.util.List;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Mensaje;
 
-public class AdapterMensajes extends RecyclerView.Adapter<HolderMensaje> {
+public class ListMensajesAdapter extends RecyclerView.Adapter<ListHolderMensaje> {
     private List<Mensaje> listMensaje = new ArrayList<>();
     private Context c;
 
-    public AdapterMensajes(Context c) {
+    public ListMensajesAdapter(Context c) {
         this.c = c;
     }
 
@@ -25,23 +25,24 @@ public class AdapterMensajes extends RecyclerView.Adapter<HolderMensaje> {
         notifyItemInserted(listMensaje.size());
     }
     @Override
-    public HolderMensaje onCreateViewHolder( ViewGroup parent, int viewType) {
+    public ListHolderMensaje onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(c).inflate(R.layout.list_mensaje,parent,false);
-        return new HolderMensaje(v);
+        return new ListHolderMensaje(v);
     }
 
     @Override
-    public void onBindViewHolder( HolderMensaje holder, int position) {
+    public void onBindViewHolder(ListHolderMensaje holder, int position) {
         holder.getNombre().setText(listMensaje.get(position).getNombre());
         holder.getMensaje().setText(listMensaje.get(position).getMensaje());
         holder.getHora().setText(listMensaje.get(position).getHora());
-        /*Date d = new Date(codigoHora);
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
-        holder.getHora().setText(sdf.format(d));*/
     }
 
     @Override
     public int getItemCount() {
         return listMensaje.size();
+    }
+
+    void onMensajeClicked(int position, String mensaje, String nombreUser) {
+
     }
 }
