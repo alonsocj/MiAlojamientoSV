@@ -12,16 +12,22 @@
     <string name="generoPerfil">Género</string>
     <string name="emailPerfil">Email</string>
 
-    <!--Login-->
-    <string name="tituloLogin">Login</string>
+    <!--Login y registro-->
+    <string name="tituloLogin">INICIAR SESION</string>
+    <string name="tituloRegistro">REGISTRAR CUENTA</string>
     <string name="usuarioLogin">Email</string>
     <string name="passwordLogin">Password</string>
     <string name="botonRegistrarse">Registrarse</string>
     <string name="botonIniciar">Ingresar</string>
+    <string name="ingresarGoogle">Ingresar con Google</string>
+    <string name="failInicio">Su correo y contraseña no son válidos. Intente nuevamente</string>
+    <string name="salir">Cerrar sesión</string>
+    <string name="ok">OK</string>
 
     <string name="hotel_title">Titulo de Hotel</string>
     <string name="hotel_description">Description Hotel</string>
     <string name="hotel_address">Direccion de el hotel</string>
     <string name="noti">Notificaciones</string>
+
 
 </resources>
