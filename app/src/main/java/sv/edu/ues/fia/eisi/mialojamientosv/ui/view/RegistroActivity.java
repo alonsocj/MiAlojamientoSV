@@ -85,11 +85,6 @@ public class RegistroActivity extends AppCompatActivity {
 
         });
     }
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, homeLogin.class));
-        finish();
-    }
     private void registrarse(String correo, String pass) {
         firebaseAuth.createUserWithEmailAndPassword(correo, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
