@@ -73,7 +73,7 @@ public class MensajesActivity extends AppCompatActivity{
 
         //Inicializamos la base de datos
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference(codigoChat);  //Sala de Chat, donde se "Guardaran" los mensajes
+        databaseReference = database.getReference().child("Chats").child(codigoChat);  //Sala de Chat, donde se "Guardaran" los mensajes
 
         //Inicializando el Chat
         hotel.setText(nombreHotel);
