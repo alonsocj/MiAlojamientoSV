@@ -14,7 +14,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -22,11 +27,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListMensajesAdapter;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
@@ -82,6 +93,7 @@ public class MensajesActivity extends AppCompatActivity{
         Bundle datosExtras=getIntent().getExtras();
         String codigoChat= datosExtras.getString("codigoChat");
         String nombreHotel=datosExtras.getString("nombreHotel");
+        String receptor=datosExtras.getString("receptor");
 
         //Inicializamos la base de datos
         database = FirebaseDatabase.getInstance();
@@ -106,6 +118,7 @@ public class MensajesActivity extends AppCompatActivity{
                     mensaje.setHint("Porfavor dígite un mensaje");
                 }else {
                     databaseReference.push().setValue(new Mensaje(mensaje.getText().toString(),idPerfil.toString(),obtenerHora()+"    "+obtenerFecha()));
+                    NotificacionTopico();
                     mensaje.setText("");
                     mensaje.setHint("Escribe un mensaje");
                     textToSpeech.iniciarCola("Mensaje Enviado");
@@ -224,10 +237,34 @@ public class MensajesActivity extends AppCompatActivity{
         super.onDestroy();
         textToSpeech.apagar();
     }
-
     @Override
     public void onBackPressed() {
         startActivity(new Intent(this, ChatsActivity.class));
         finish();
+    }
+    private void NotificacionTopico() {
+        RequestQueue myrequest = Volley.newRequestQueue(getApplicationContext());
+        JSONObject json = new JSONObject();
+        try{
+            json.put("to","/topics/"+"enviaratodos");
+            JSONObject notificacion =new JSONObject();
+            notificacion.put("titulo","Mensaje Nuevo");
+            notificacion.put("detalle","Tiene mensajes nuevos");
+            json.put("data",notificacion);
+            String url = "https://fcm.googleapis.com/fcm/send";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,json,null,null){
+                @Override
+                public Map<String, String> getHeaders(){
+                    Map<String, String> header = new HashMap<>();
+                    header.put("Authorization", "key=AAAALA98pYw:APA91bHRnlGfODSkRge-a_oNmTdSWGLr1WlYytnXsr1FVTgdWHn_kjCL7Vmrv9OtgbEVDJozqAgKlKjyip2-h_3UEokH2VtLRPPnaffb0ZAjsCCkMZZESroqb5H3-fenUmzpQU-nzp3_");
+                    header.put("Content-type", "application/json");
+                    return header;
+                }
+            };
+            myrequest.add(request);
+        }catch (JSONException e){
+            e.printStackTrace();
+            Toast.makeText(this,"Ocurrio un error",Toast.LENGTH_LONG);
+        }
     }
 }
