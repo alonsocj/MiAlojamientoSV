@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
@@ -15,7 +16,9 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -59,6 +62,11 @@ import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.HotelViewModel;
 public class MapaActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener, GoogleMap.OnInfoWindowClickListener{
+
+    public static final int SWIPE_THRESHOLD = 100;
+    public static final int SWIPE_VELOCITY_THRESHOLD = 100;
+    GestureDetectorCompat gestureDetectorCompat;
+
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
 
@@ -76,6 +84,9 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        gestureDetectorCompat=new GestureDetectorCompat(this, new MapaActivity.GestureDetectorListener());
+
 
         firebaseAuth= FirebaseAuth.getInstance();
         firebaseUser=firebaseAuth.getCurrentUser();
@@ -109,6 +120,50 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
+    //Implementando gestos
+    private class GestureDetectorListener extends GestureDetector.SimpleOnGestureListener{
+        @Override
+        public boolean onFling(MotionEvent rightEvent, MotionEvent moveEvent, float velocityX, float velocityY) {
+            boolean result=false;
+            float diffX = moveEvent.getX()-rightEvent.getX();
+            float diffY = moveEvent.getY()-rightEvent.getY();
+
+            if(Math.abs(diffX)>Math.abs(diffY)){
+                //right or left swipe
+                if(Math.abs(diffX)> SWIPE_THRESHOLD && Math.abs(velocityX)> SWIPE_VELOCITY_THRESHOLD){
+
+                    if (diffX>0){
+                        //onSwipeRight();
+                        startActivity(new Intent(MapaActivity.this, FavoritosActivity.class));
+                    }else{
+                        //onSwipeLeft();
+                        startActivity(new Intent(MapaActivity.this, ChatsActivity.class));
+                    }
+                    result=true;
+                }
+            }else{
+                //up or down swipe
+                if(Math.abs(diffY)> SWIPE_THRESHOLD && Math.abs(velocityY)> SWIPE_VELOCITY_THRESHOLD){
+                    if (diffY>0){
+                        //onSwipeBottom();
+                    }else{
+                        //onSwipeTop();
+                    }
+                }
+                result=false;
+            }
+            return result;
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent (MotionEvent event){
+        gestureDetectorCompat.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+    //Fin implementar gestos
+
     protected void onStart(){
         verificarInicioSesion();
         super.onStart();

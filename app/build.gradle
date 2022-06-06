@@ -75,19 +75,22 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.firebase:firebase-auth:21.0.5'
     implementation 'com.google.firebase:firebase-firestore:24.1.2'
+
+    //Envíos de correo
     implementation files('libs\\additionnal.jar')
     implementation files('libs\\mail.jar')
     implementation files('libs\\activation.jar')//Tarjetas
 
+    /*GMS Autenticación*/
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
+    implementation 'com.google.firebase:firebase-storage:19.1.0'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
     /* FIN LIBRERIAS */
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     
-/*GMS Autenticación*/
-    implementation 'com.google.firebase:firebase-auth:20.0.1'
-    implementation 'com.google.firebase:firebase-storage:19.1.0'
-    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+
 
 }
