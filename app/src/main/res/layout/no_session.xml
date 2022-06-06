@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:background="#fff"
+    android:layout_gravity="center">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:text="@string/failInicio"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <!--<com.airbnb.lottie.LottieAnimationView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            app:lottie_imageAssetsFolder="assets"
+            app:lottie_fileName="no_session.json"
+            app:lottie_autoPlay="true"
+            />-->
+        <Button
+            android:id="@+id/respuesta"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:backgroundTint="#138D75"
+
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
