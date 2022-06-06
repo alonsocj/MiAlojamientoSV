@@ -24,7 +24,6 @@
             android:name=".ui.view.RegistroActivity"
             android:exported="false" />
         <activity
-        <activity
             android:name=".ui.view.MensajesActivity"
             android:exported="false" />
         <activity
