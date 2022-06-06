@@ -15,11 +15,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Chat;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Habitacion;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
 
-public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
+public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
     String googlePlacesData;
     GoogleMap googleMap;
@@ -33,7 +34,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
 
         DownloadUrl downloadUrl = new DownloadUrl();
 
-        try{
+        try {
             googlePlacesData = downloadUrl.readUrl(url);
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,12 +45,12 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
 
     @Override
     protected void onPostExecute(String s) {
-        try{
+        try {
             JSONObject jsonObject = new JSONObject(s);
 
             JSONArray jsonArray = jsonObject.getJSONArray("results"); /*Extraido de la api de Google*/
 
-            for (int i=0; i<jsonArray.length(); i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject datosextraidos = jsonArray.getJSONObject(i);
 
                 JSONObject locationObj = datosextraidos.getJSONObject("geometry").getJSONObject("location");
@@ -62,7 +63,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
                 String rating = nameObject.getString("rating");
                 String direccion = nameObject.getString("vicinity");
                 String idHotel = nameObject.getString("place_id");
-
+                String evaluaciones = nameObject.getString("user_ratings_total");
                 int precio = nameObject.getInt("user_ratings_total");
 
 
@@ -72,24 +73,33 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
 
                 Hotel actual = null;
 
-                try{
-                   actual = Hotel.find(Hotel.class, "ID_HOTEL = '" + idHotel +"'", null).get(0);
-                }catch (Exception exception){
+                try {
+                    actual = Hotel.find(Hotel.class, "ID_HOTEL = '" + idHotel + "'", null).get(0);
+                } catch (Exception exception) {
                     exception.printStackTrace();
                 }
-                if(actual != null){
+                if (actual != null) {
 
-                }else{
+                } else {
                     Hotel hotel = new Hotel();
                     Propietario propietario = new Propietario();
                     Habitacion habitacion = new Habitacion();
+                    Chat chat = new Chat();
 
                     //Guarda los datos de la habitacion en la base
-                    habitacion.setCantCamas(2);
-                    habitacion.setCantBat(1);
-                    habitacion.setIdHabitacion(1);
-                    habitacion.setServiciosExtra("Television");
-                    habitacion.setCantPersonas(2);
+                    if ((i % 2) == 0) {
+                        habitacion.setCantCamas(2);
+                        habitacion.setCantBat(2);
+                        habitacion.setIdHabitacion(1);
+                        habitacion.setServiciosExtra("Television , Cocina , Aire Acondicionado");
+                        habitacion.setCantPersonas(2);
+                    } else {
+                        habitacion.setCantCamas(1);
+                        habitacion.setCantBat(1);
+                        habitacion.setIdHabitacion(1);
+                        habitacion.setServiciosExtra("Television, Aire Acondicionado");
+                        habitacion.setCantPersonas(1);
+                    }
                     habitacion.setDisponibilidad(1);
                     habitacion.setPrecioPorDia(String.valueOf(precio * 10));
 
@@ -98,11 +108,18 @@ public class GetNearbyPlacesData extends AsyncTask<Object,String,String> {
                     hotel.setTitulo(name);
                     hotel.setLatitudH(latitud);
                     hotel.setLongitudH(longitud);
-                    hotel.setImagen("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+photo_reference+"&key="+API);
+                    hotel.setImagen("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=" + photo_reference + "&key=" + API);
                     hotel.setDescripcion("Estrellas: " + rating);
+                    hotel.setEvaluaciones("Evaluaciones: " + evaluaciones);
                     hotel.setPropietario(propietario);
                     hotel.setDireccion(direccion);
                     hotel.save();
+
+                    chat.setIdChat(idHotel);
+                    chat.setNombre(name);
+                    chat.setEmisor(1);
+                    chat.setReceptor(1);
+                    chat.save();
 
                     habitacion.setIdHotel(hotel);
                     habitacion.save();

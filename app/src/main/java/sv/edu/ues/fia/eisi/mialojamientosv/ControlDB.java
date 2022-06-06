@@ -20,7 +20,7 @@ public class ControlDB {
     public static void llenarBase(){
         //llenarHoteles();
         llenarPerfil();
-        llenarChats();
+        //llenarChats();
     }
     private static void llenarHoteles() {
         Propietario.deleteAll(Propietario.class);

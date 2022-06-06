@@ -21,6 +21,9 @@
         tools:replace="android:icon"
         tools:targetApi="31">
         <activity
+            android:name=".ui.view.RegistroActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.MensajesActivity"
             android:exported="false" />
         <activity

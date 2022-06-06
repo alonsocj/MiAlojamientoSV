@@ -179,7 +179,7 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         stringBuilder.append("&radius=1500");
         stringBuilder.append("&keyword=hotel");
         stringBuilder.append("&type=hotel");
-        stringBuilder.append("&key=AIzaSyAKakDqcpt9_DzYy9SWkutteLyZ9x_1bdU"); //Cambiar esta llave, No es aceptada.
+        stringBuilder.append("&key=AIzaSyAKakDqcpt9_DzYy9SWkutteLyZ9x_1bdU");
         String url = stringBuilder.toString();
         Object dataTrasfer[] = new Object[2];
         dataTrasfer[0] = nmap;

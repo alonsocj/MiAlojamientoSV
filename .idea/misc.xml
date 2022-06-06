@@ -12,15 +12,19 @@
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.3025" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/drawable/ic_launcher_perfil_chat_background.xml" value="0.258" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/drawable/ic_perfil.xml" value="0.3025" />
+        <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/drawable/iconogoogle.xml" value="0.119" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/drawable/microfono.xml" value="0.1" />
+        <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/drawable/round_corner.xml" value="0.119" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/layout/activity_chat_interno.xml" value="0.33" />
-        <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/layout/activity_home_login.xml" value="0.36666666666666664" />
+        <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/layout/activity_home_login.xml" value="0.25" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/layout/activity_mapa.xml" value="0.1762917933130699" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/layout/activity_mensaje_interno.xml" value="0.365625" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/layout/activity_mensajes.xml" value="0.33" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/layout/activity_notificacion_interno.xml" value="0.22" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/layout/activity_perfil.xml" value="0.36666666666666664" />
+        <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/layout/activity_registro.xml" value="0.33" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/layout/list_hoteles.xml" value="0.36666666666666664" />
+        <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/layout/no_session.xml" value="0.33" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/menu/my_navigation_items.xml" value="0.3490740740740741" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/mipmap-anydpi-v26/ic_launcher_perfil_chat.xml" value="0.258" />
         <entry key="..\:/Documentos/Escritorio/MiAlojamientoSV/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3025" />
@@ -46,6 +50,13 @@
         <entry key="..\:/Servidores/MiAlojamientoSV/app/src/main/res/layout/list_hoteles.xml" value="0.36666666666666664" />
         <entry key="..\:/Servidores/MiAlojamientoSV/app/src/main/res/layout/list_mensaje.xml" value="0.33" />
         <entry key="..\:/Servidores/MiAlojamientoSV/app/src/main/res/layout/mensaje.xml" value="0.365625" />
+        <entry key="..\:/MiAlojamientoSV/app/src/main/res/drawable/ic_perfil.xml" value="0.227" />
+        <entry key="..\:/MiAlojamientoSV/app/src/main/res/layout/activity_home_login.xml" value="0.2875905797101449" />
+        <entry key="..\:/MiAlojamientoSV/app/src/main/res/layout/activity_hotel.xml" value="0.2994791666666667" />
+        <entry key="..\:/MiAlojamientoSV/app/src/main/res/layout/activity_main.xml" value="0.328804347826087" />
+        <entry key="..\:/MiAlojamientoSV/app/src/main/res/layout/activity_mapa.xml" value="0.1762917933130699" />
+        <entry key="..\:/MiAlojamientoSV/app/src/main/res/layout/fragment_mapa.xml" value="0.1762917933130699" />
+        <entry key="..\:/MiAlojamientoSV/app/src/main/res/layout/list_hoteles.xml" value="0.2875905797101449" />
         <entry key="..\:/UES/CICLO I 2022/PDM115/MiAlojamientoSV/app/src/main/res/drawable/background_shape.xml" value="0.1965" />
         <entry key="..\:/UES/CICLO I 2022/PDM115/MiAlojamientoSV/app/src/main/res/layout/activity_favoritos.xml" value="0.35260416666666666" />
         <entry key="..\:/UES/CICLO I 2022/PDM115/MiAlojamientoSV/app/src/main/res/layout/activity_hotel.xml" value="0.358695652173913" />
