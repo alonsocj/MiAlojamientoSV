@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.se.omapi.Session;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
@@ -33,9 +35,13 @@ import com.squareup.picasso.Picasso;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
 
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Properties;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.JavaMailAPI;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.SplashScreen;
@@ -64,6 +70,10 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
     StripeService paymentService;
     PaymentSheet paymentSheet;
     GoogleMap map;
+
+    Session session=null;
+    String rec, subject, textMessage;
+    ProgressDialog pdialog = null;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -116,6 +126,12 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
                 paymentFlow();
             }
         });
+    }
+
+    //Envio de correo de la confirmación de la reservación.
+    private void envioEmail(){
+        JavaMailAPI javaMailAPI=new JavaMailAPI(this,"gustavopineda400@gmail.com","Reservacion elaborada","Su reservación ha sido satisfactoria");
+        javaMailAPI.execute();
     }
 
     private void elementsInit() {
@@ -210,6 +226,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
             reservacion.setPrecioTotal(cantDias * (Float.parseFloat(this.precio)));
             reservacion.save();
             Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
+            envioEmail();
         }
     }
 
