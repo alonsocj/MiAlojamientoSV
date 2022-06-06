@@ -33,11 +33,6 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
@@ -46,7 +41,6 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Properties;
 
 import sv.edu.ues.fia.eisi.mialojamientosv.JavaMailAPI;
@@ -56,7 +50,6 @@ import sv.edu.ues.fia.eisi.mialojamientosv.SplashScreen;
 import sv.edu.ues.fia.eisi.mialojamientosv.StripeService;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityHotelBinding;
 import sv.edu.ues.fia.eisi.mialojamientosv.homeLogin;
-import sv.edu.ues.fia.eisi.mialojamientosv.model.Chat;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Favorito;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Habitacion;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
@@ -68,7 +61,6 @@ import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.HotelViewModel;
 public class HotelActivity extends AppCompatActivity implements Comunicacion, OnMapReadyCallback {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-    DatabaseReference baseDatos;
 
     ActivityHotelBinding binding;
     TextView tvNombreHotel, tvDireccionHotel, tvDescriptionHotel, tiempoReserva, tiempoReservaFin, precioReserva, camas, banios, personas, servicios, valoracion;
@@ -76,14 +68,14 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
     String reserva, reservaFin, precio;
     ImageView ivFotoHotel;
     LottieAnimationView botonf;
-    Button pay, contactanos;
+    Button pay;
     Hotel hotel;
     Perfil perfil;
     String id = "";
     StripeService paymentService;
     PaymentSheet paymentSheet;
     GoogleMap map;
-    String idPerfil,idPropietario="mialojamientosv@outlook.es";
+    String idPerfil="gustavopineda400@gmail.com";
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -92,24 +84,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
 
         firebaseAuth= FirebaseAuth.getInstance();
         firebaseUser=firebaseAuth.getCurrentUser();
-        baseDatos= FirebaseDatabase.getInstance().getReference("usuariosApp");
 
-        //Extraemos el usuario logueado
-        baseDatos.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //Si el usuario existe
-                if (snapshot.exists()){
-                    //obteniendo datos
-                    idPerfil=""+snapshot.child("correo").getValue();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         binding = ActivityHotelBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -158,39 +133,6 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
                 paymentFlow();
             }
         });
-
-        contactanos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Validamos el código del chat
-                String codigo=hotel.getIdHotel()+idPerfil+idPropietario;
-                codigo=codigo.replace(".","");
-                codigo=codigo.replace("#","");
-                codigo=codigo.replace("$","");
-                codigo=codigo.replace("[","");
-                codigo=codigo.replace("]","");
-
-                String uid=firebaseUser.getUid();
-
-                //Introducimos los Chats a Firebase
-                HashMap<Object,String> Chats=new HashMap<>();
-                Chats.put("uid",uid);
-                Chats.put("idChat",codigo);
-                Chats.put("nombre",hotel.getTitulo());
-                Chats.put("emisor",idPerfil);
-                Chats.put("receptor",idPropietario);
-                FirebaseDatabase database= FirebaseDatabase.getInstance();
-                DatabaseReference reference=database.getReference("ListadoChats");
-                reference.child(codigo).setValue(Chats);
-
-                //Abrimos la sala del chat de los mensajes
-                Intent i = new Intent(HotelActivity.this, MensajesActivity.class);
-                i.putExtra("codigoChat", codigo);
-                i.putExtra("nombreHotel", hotel.getTitulo());
-                i.putExtra("receptor",idPropietario);
-                startActivity(i);
-            }
-        });
     }
 
     //Envio de correo de la confirmación de la reservación.
@@ -206,6 +148,12 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
         javaMailAPI.execute();
     }
 
+
+
+
+
+
+
     private void elementsInit() {
         botonf = binding.animationFavoriteHotel;
         tvNombreHotel = binding.tvHotelName;
@@ -218,7 +166,6 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
         personas = binding.cantPersonas;
         servicios = binding.extra;
         pay = binding.pay;
-        contactanos = binding.contactanos;
         tiempoReserva = binding.tiempoReserva;
         tiempoReserva.setText(fecha);
         tiempoReservaFin = binding.tiempoReservaFin;
