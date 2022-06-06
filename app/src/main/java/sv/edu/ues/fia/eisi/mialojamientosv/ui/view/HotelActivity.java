@@ -148,6 +148,12 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
         javaMailAPI.execute();
     }
 
+
+
+
+
+
+
     private void elementsInit() {
         botonf = binding.animationFavoriteHotel;
         tvNombreHotel = binding.tvHotelName;
