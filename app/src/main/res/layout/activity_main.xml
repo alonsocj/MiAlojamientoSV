@@ -8,6 +8,31 @@
     android:background="@color/light_white"
     tools:context=".MainActivity">
 
+    <RelativeLayout
+        android:id="@+id/seccion"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/round_corner"
+        android:backgroundTint="#34495E"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/TituloChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hotelescercanos"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/seccion">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listHoteles"
         android:layout_width="match_parent"
@@ -30,5 +55,6 @@
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/my_navigation_items" />
 
+    </RelativeLayout>
 
 </RelativeLayout>

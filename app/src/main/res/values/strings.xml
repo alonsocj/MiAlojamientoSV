@@ -37,4 +37,13 @@
     <!--Mapa en Hotel-->
     <string name="teencontraras">Dónde estaras</string>
 
+    <!--Activity Map-->
+    <string name="hotelActivity">Tu ubicación</string>
+
+    <!--Activity favoritos-->
+    <string name="favActivity">Tus hoteles favoritos</string>
+
+    <!--Activity Inicio -->
+    <string name="hotelescercanos">Hoteles cercanos a Ti</string>
+
 </resources>

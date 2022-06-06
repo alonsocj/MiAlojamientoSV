@@ -7,11 +7,32 @@
     android:background="#D0ECE7"
     tools:context=".ui.view.PerfilActivity">
 
+    <RelativeLayout
+        android:id="@+id/seccion"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/round_corner"
+        android:backgroundTint="#34495E"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/TituloChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tituloPerfil"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/seccion"
         android:orientation="vertical"
         tools:context=".ui.view.PerfilActivity">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,83 +43,76 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:src="@drawable/ic_usuario"/>
-
-            <TextView
-                android:id="@+id/textView_titulo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingTop="10dp"
-                android:text="@string/tituloPerfil"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/black" />
+                android:src="@drawable/ic_usuario" />
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                app:startIconDrawable="@drawable/ic_nombre"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:hint="@string/nombrePerfil">
+                android:hint="@string/nombrePerfil"
+                app:startIconDrawable="@drawable/ic_nombre">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/EditNombrePerfil"
-                    android:inputType="text"
-                    android:maxLength="50"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:cursorVisible="false"
-                    android:longClickable="false"/>
+                    android:inputType="text"
+                    android:longClickable="false"
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                app:startIconDrawable="@drawable/ic_genero"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:hint="@string/generoPerfil">
+                android:hint="@string/generoPerfil"
+                app:startIconDrawable="@drawable/ic_genero">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/EditGeneroPerfil"
-                    android:inputType="text"
-                    android:maxLength="50"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:cursorVisible="false"
-                    android:longClickable="false"/>
+                    android:inputType="text"
+                    android:longClickable="false"
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                app:startIconDrawable="@drawable/ic_email"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:hint="@string/emailPerfil">
+                android:hint="@string/emailPerfil"
+                app:startIconDrawable="@drawable/ic_email">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/EditEmailPerfil"
-                    android:inputType="text"
-                    android:maxLength="50"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:cursorVisible="false"
-                    android:longClickable="false"/>
+                    android:inputType="text"
+                    android:longClickable="false"
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/botonCerrarSesion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/salir"
                 android:layout_marginTop="30dp"
-                android:textColor="@color/white"
-                android:backgroundTint="#138D75" />
+                android:backgroundTint="#138D75"
+                android:text="@string/salir"
+                android:textColor="@color/white" />
         </LinearLayout>
     </ScrollView>
 
