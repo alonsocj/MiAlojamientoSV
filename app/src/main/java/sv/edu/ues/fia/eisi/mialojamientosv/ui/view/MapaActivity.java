@@ -41,6 +41,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,7 @@ import sv.edu.ues.fia.eisi.mialojamientosv.GetNearbyPlacesData;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityMapaBinding;
+import sv.edu.ues.fia.eisi.mialojamientosv.homeLogin;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.HotelViewModel;
@@ -56,6 +59,8 @@ import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.HotelViewModel;
 public class MapaActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener, GoogleMap.OnInfoWindowClickListener{
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
 
     private ActivityMapaBinding binding;
     BottomNavigationView navigationView;
@@ -71,6 +76,11 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        firebaseAuth= FirebaseAuth.getInstance();
+        firebaseUser=firebaseAuth.getCurrentUser();
+
+
         binding = ActivityMapaBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -99,7 +109,18 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+    protected void onStart(){
+        verificarInicioSesion();
+        super.onStart();
+    }
 
+    private void verificarInicioSesion(){
+        if(firebaseUser!=null){
+        }else{
+            startActivity(new Intent(this, homeLogin.class));
+            finish();
+        }
+    }
     private void setUPGClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this,0,this)

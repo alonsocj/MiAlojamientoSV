@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,9 +28,12 @@ import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListChatsAdapter;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityChatsBinding;
+import sv.edu.ues.fia.eisi.mialojamientosv.homeLogin;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Chat;
 
 public class ChatsActivity extends AppCompatActivity {
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
 
     ActivityChatsBinding binding;
     BottomNavigationView navigationView;
@@ -44,6 +49,10 @@ public class ChatsActivity extends AppCompatActivity {
         binding = ActivityChatsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        firebaseAuth= FirebaseAuth.getInstance();
+        firebaseUser=firebaseAuth.getCurrentUser();
+
 
         //Inicializamos nuestro listado de chat para el perfil logueado
         listadoChatUsuario=new ArrayList<>();
@@ -120,7 +129,18 @@ public class ChatsActivity extends AppCompatActivity {
             }
         });
     }
+    protected void onStart(){
+        verificarInicioSesion();
+        super.onStart();
+    }
 
+    private void verificarInicioSesion(){
+        if(firebaseUser!=null){
+        }else{
+            startActivity(new Intent(this, homeLogin.class));
+            finish();
+        }
+    }
     @SuppressLint("NonConstantResourceId")
     public void setActivity(@NonNull MenuItem item) {
         switch (item.getItemId()) {
