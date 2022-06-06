@@ -75,10 +75,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
     StripeService paymentService;
     PaymentSheet paymentSheet;
     GoogleMap map;
-
-    Session session=null;
-    String rec, subject, textMessage;
-    ProgressDialog pdialog = null;
+    String idPerfil="gustavopineda400@gmail.com";
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -139,8 +136,15 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
     }
 
     //Envio de correo de la confirmación de la reservación.
-    private void envioEmail(){
-        JavaMailAPI javaMailAPI=new JavaMailAPI(this,"gustavopineda400@gmail.com","Reservacion elaborada","Su reservación ha sido satisfactoria");
+    private void envioEmail(Reservacion reservacion){
+        String asunto="Reservación "+reservacion.getIdHotel().getTitulo();
+        String mensaje="Comprobante de Reservación "+reservacion.getIdHotel().getTitulo()
+                +"\n\n"+"Fecha de registro: "+reservacion.getFechaRegistro()
+                +"\n\nPeríodo de Reserva:"
+                +"\nFecha de inicio: "+reservacion.getFechaInicio()
+                +"\nFecha fin: "+reservacion.getFechaFin()
+                +"\n\nTotal cancelado: $"+reservacion.getPrecioTotal();
+        JavaMailAPI javaMailAPI=new JavaMailAPI(this,idPerfil,asunto,mensaje);
         javaMailAPI.execute();
     }
 
@@ -247,8 +251,8 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
             reservacion.setFechaRegistro(hoy);
             reservacion.setPrecioTotal(cantDias * (Float.parseFloat(this.precio)));
             reservacion.save();
-            Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
-            envioEmail();
+            Toast.makeText(this, "Pago realizado con éxito, Comprobante enviado a correo.", Toast.LENGTH_SHORT).show();
+            envioEmail(reservacion);
         }
     }
 

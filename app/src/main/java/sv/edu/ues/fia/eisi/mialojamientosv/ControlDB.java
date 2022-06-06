@@ -48,8 +48,6 @@ public class ControlDB {
         Perfil perfil = new Perfil();
         perfil.setIdPerfil(1);
         perfil.setNombre("Perfil 1");
-        perfil.setLatitud("Latitud 1");
-        perfil.setLongitud("Longitud 1");
         perfil.setGenero("Masculino");
         perfil.setEmail("email");
         perfil.save();
