@@ -20,12 +20,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.stripe.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Locale;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.FCM;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
+import sv.edu.ues.fia.eisi.mialojamientosv.SplashScreen;
 import sv.edu.ues.fia.eisi.mialojamientosv.homeLogin;
 
 public class RegistroActivity extends AppCompatActivity {
@@ -97,6 +100,17 @@ public class RegistroActivity extends AppCompatActivity {
                             String pass=PasswordLogin.getText().toString();
                             String nom=nombre.getText().toString();
                             String gen=genero.getText().toString();
+
+                            FirebaseMessaging.getInstance().getToken()
+                                    .addOnCompleteListener(task1 -> {
+                                        if (!task1.isSuccessful()) {
+                                            Toast.makeText(RegistroActivity.this, "Ocurrio un error", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+                                        String token = task1.getResult();
+                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("token");
+                                        ref.child(uid).setValue(token);
+                                    });
 
                             //Creamos un HashMap para mandar los datos a Firebase
                             HashMap<Object,String> DatosUsuario=new HashMap<>();
