@@ -61,7 +61,7 @@ public class PerfilActivity extends AppCompatActivity {
         cerrarSesion=findViewById(R.id.botonCerrarSesion);
 
 
-        //extraer datos de la base firebase
+        //Extraemos el usuario logueado
         baseDatos.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

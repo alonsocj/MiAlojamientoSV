@@ -1,5 +1,6 @@
 package sv.edu.ues.fia.eisi.mialojamientosv.ui.view;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +52,7 @@ import sv.edu.ues.fia.eisi.mialojamientosv.R;
 public class MensajesActivity extends AppCompatActivity{
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+    DatabaseReference baseDatos;
 
     private EditText mensaje;
     private TextView hotel,nombre;
@@ -57,7 +60,6 @@ public class MensajesActivity extends AppCompatActivity{
     private ListMensajesAdapter adapter;
     private RecyclerView rvMensajes;
     private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
 
     //Inicializamos la entrada de texto a voz
     //Texto a Voz
@@ -67,7 +69,7 @@ public class MensajesActivity extends AppCompatActivity{
     //Este es se utiliza para grabar voz
     private static final int REQ_CODE_SPEECH_INPUT = 100;
 
-    String idPerfil="Gustavo Pineda";
+    String idPerfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,25 @@ public class MensajesActivity extends AppCompatActivity{
 
         firebaseAuth= FirebaseAuth.getInstance();
         firebaseUser=firebaseAuth.getCurrentUser();
+        baseDatos= FirebaseDatabase.getInstance().getReference("usuariosApp");
+
+
+        //Extraemos el usuario logueado
+        baseDatos.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //Si el usuario existe
+                if (snapshot.exists()){
+                    //obteniendo datos
+                    idPerfil=""+snapshot.child("nombre").getValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
         setContentView(R.layout.activity_mensajes);
@@ -96,8 +117,7 @@ public class MensajesActivity extends AppCompatActivity{
         String receptor=datosExtras.getString("receptor");
 
         //Inicializamos la base de datos
-        database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference().child("Chats").child(codigoChat);  //Sala de Chat, donde se "Guardaran" los mensajes
+        baseDatos = FirebaseDatabase.getInstance().getReference().child("Chats").child(codigoChat);  //Sala de Chat, donde se "Guardaran" los mensajes
 
         //Inicializando el Chat
         hotel.setText(nombreHotel);
@@ -117,7 +137,7 @@ public class MensajesActivity extends AppCompatActivity{
                     mensaje.setText("");
                     mensaje.setHint("Porfavor dígite un mensaje");
                 }else {
-                    databaseReference.push().setValue(new Mensaje(mensaje.getText().toString(),idPerfil.toString(),obtenerHora()+"    "+obtenerFecha()));
+                    baseDatos.push().setValue(new Mensaje(mensaje.getText().toString(),idPerfil.toString(),obtenerHora()+"    "+obtenerFecha()));
                     NotificacionTopico();
                     mensaje.setText("");
                     mensaje.setHint("Escribe un mensaje");
@@ -143,7 +163,7 @@ public class MensajesActivity extends AppCompatActivity{
             }
         });
 
-        databaseReference.addChildEventListener(new ChildEventListener() {
+        baseDatos.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //Cuando agreguemos un dato a la base de datos, lo agregara a la lista de chat
@@ -236,11 +256,6 @@ public class MensajesActivity extends AppCompatActivity{
     protected void onDestroy() {
         super.onDestroy();
         textToSpeech.apagar();
-    }
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, ChatsActivity.class));
-        finish();
     }
     private void NotificacionTopico() {
         RequestQueue myrequest = Volley.newRequestQueue(getApplicationContext());
