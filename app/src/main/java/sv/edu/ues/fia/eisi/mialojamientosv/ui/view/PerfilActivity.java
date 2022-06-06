@@ -15,10 +15,17 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.ButtCap;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
+import java.util.Locale;
 
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
@@ -30,11 +37,11 @@ public class PerfilActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+    DatabaseReference baseDatos;
 
     ActivityPerfilBinding binding;
     BottomNavigationView navigationView;
-    EditText nombre, email, genero;
-    Integer idPerfil=1;
+    TextInputEditText nombre, email, genero;
     Button cerrarSesion;
 
     @Override
@@ -46,25 +53,38 @@ public class PerfilActivity extends AppCompatActivity {
 
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseUser=firebaseAuth.getCurrentUser();
+        baseDatos= FirebaseDatabase.getInstance().getReference("usuariosApp");
 
         nombre= findViewById(R.id.EditNombrePerfil);
         email = findViewById(R.id.EditEmailPerfil);
         genero = findViewById(R.id.EditGeneroPerfil);
         cerrarSesion=findViewById(R.id.botonCerrarSesion);
 
-        //Extraemos los perfiles de la base de datos
-        List<Perfil> listadoPerfiles=Perfil.listAll(Perfil.class);
 
-        //Mostramos datos para el perfil logueado
-        for(int i=0;i<listadoPerfiles.size();i++){
-            Perfil perfil=new Perfil();
-            perfil=listadoPerfiles.get(i);
-            if(perfil.getIdPerfil()==idPerfil){
-                nombre.setText(perfil.getNombre());
-                email.setText(perfil.getEmail());
-                genero.setText(perfil.getGenero());
+        //extraer datos de la base firebase
+        baseDatos.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //Si el usuario existe
+                if (snapshot.exists()){
+                    //obteniendo datos
+                    String correos=""+snapshot.child("correo").getValue();
+                    String generos=""+snapshot.child("genero").getValue();
+                    String nombres=""+snapshot.child("nombre").getValue();
+
+                    //seteamos datos
+                    nombre.setText(nombres.toUpperCase());
+                    email.setText(correos);
+                    genero.setText(generos.toUpperCase());
+                }
+
             }
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         navigationView = binding.bottomNavigation;
 
@@ -95,7 +115,13 @@ public class PerfilActivity extends AppCompatActivity {
 
     private void cerrarSesion(){
         firebaseAuth.signOut();
+        startActivity(new Intent(this, homeLogin.class));
+        finish();
+    }
+    @Override
+    public void onBackPressed() {
         startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     protected void onStart(){
@@ -117,18 +143,22 @@ public class PerfilActivity extends AppCompatActivity {
             case R.id.explore:
                 startActivity(new Intent(PerfilActivity.this, MainActivity.class));
                 overridePendingTransition(0, 0);
+                finish();
                 break;
             case R.id.favoritos:
                 startActivity(new Intent(PerfilActivity.this, FavoritosActivity.class));
                 overridePendingTransition(0, 0);
+                finish();
                 break;
             case R.id.mapa:
                 startActivity(new Intent(PerfilActivity.this, MapaActivity.class));
                 overridePendingTransition(0, 0);
+                finish();
                 break;
             case R.id.mensajes:
                 startActivity(new Intent(PerfilActivity.this, ChatsActivity.class));
                 overridePendingTransition(0, 0);
+                finish();
                 break;
             case R.id.perfil:
                 break;
