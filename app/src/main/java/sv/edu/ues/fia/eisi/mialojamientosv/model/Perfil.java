@@ -6,19 +6,15 @@ import com.orm.SugarRecord;
 public class Perfil extends SugarRecord<Perfil> {
     private int idPerfil;
     private String nombre;
-    private String latitud;
-    private String longitud;
     private String genero;
     private String email;
 
     public Perfil() {
     }
 
-    public Perfil(int idPerfil, String nombre, String latitud, String longitud, String genero, String email) {
+    public Perfil(int idPerfil, String nombre, String genero, String email) {
         this.idPerfil = idPerfil;
         this.nombre = nombre;
-        this.latitud = latitud;
-        this.longitud = longitud;
         this.genero = genero;
         this.email = email;
     }
@@ -37,22 +33,6 @@ public class Perfil extends SugarRecord<Perfil> {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getLatitud() {
-        return latitud;
-    }
-
-    public void setLatitud(String latitud) {
-        this.latitud = latitud;
-    }
-
-    public String getLongitud() {
-        return longitud;
-    }
-
-    public void setLongitud(String longitud) {
-        this.longitud = longitud;
     }
 
     public String getGenero() {

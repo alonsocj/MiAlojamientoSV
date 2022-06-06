@@ -99,6 +99,7 @@ public class ChatsActivity extends AppCompatActivity {
                 Intent i = new Intent(ChatsActivity.this, MensajesActivity.class);
                 i.putExtra("codigoChat", elegido.getIdChat());
                 i.putExtra("nombreHotel", elegido.getNombre());
+                i.putExtra("receptor",elegido.getReceptor());
                 startActivity(i);
             }
         });

@@ -70,6 +70,7 @@ public class MensajesActivity extends AppCompatActivity{
         Bundle datosExtras=getIntent().getExtras();
         String codigoChat= datosExtras.getString("codigoChat");
         String nombreHotel=datosExtras.getString("nombreHotel");
+        String receptor=datosExtras.getString("receptor");
 
         //Inicializamos la base de datos
         database = FirebaseDatabase.getInstance();
