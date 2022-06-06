@@ -22,7 +22,6 @@ public class FCM extends FirebaseMessagingService {
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
         Log.e("token","mi token "+token);
-        guardarToken(token);
     }
 
     private void guardarToken(String token) {
