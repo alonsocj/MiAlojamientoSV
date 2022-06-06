@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -100,7 +102,25 @@ public class homeLogin extends AppCompatActivity {
                             startActivity(new Intent(homeLogin.this, MapaActivity.class));
 
                             assert user != null; //se afirma que el usuario no es nulo
+                            //Guardamos el token del telefono
+                            FirebaseMessaging.getInstance().getToken()
+                                    .addOnCompleteListener(task1 -> {
+                                        if (!task1.isSuccessful()) {
+                                            return;
+                                        }
+                                        String token = task1.getResult();
+                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("token");
+                                        ref.child(user.getUid()).setValue(token);
+                                        Log.e("token","mi token "+token);
+                                    });
+                            //Suscribimos al user a topico (por si no se puede de la otra forma)
+                            FirebaseMessaging.getInstance().subscribeToTopic("enviaratodos").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                }
+                            });
                             finish();
+
                         }else{
                             progressDialog.dismiss();
                             Dialog_No_Incio();
