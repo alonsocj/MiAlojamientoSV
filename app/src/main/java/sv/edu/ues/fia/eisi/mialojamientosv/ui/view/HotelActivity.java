@@ -218,9 +218,16 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
     }
 
     private void paymentFlow() {
+        PaymentSheet.CustomerConfiguration customerConfiguration = new PaymentSheet.CustomerConfiguration(paymentService.getFinalCustomerID(),
+                paymentService.getFinalEphimeral());
+        PaymentSheet.BillingDetails billingDetails = new PaymentSheet.BillingDetails(new PaymentSheet.Address("", "SV", hotel.getDireccion(), "", "", ""),
+                null,null,null);
+        PaymentSheet.Configuration config = new PaymentSheet.Configuration.Builder(hotel.getTitulo())
+                .defaultBillingDetails(billingDetails).customer(customerConfiguration).build();
+        /*(hotel.getTitulo(),
+                new PaymentSheet.CustomerConfiguration(paymentService.getFinalCustomerID(), paymentService.getFinalEphimeral()));*/
         paymentSheet.presentWithPaymentIntent(
-                paymentService.getFinalClientSecret(), new PaymentSheet.Configuration(hotel.getTitulo(),
-                        new PaymentSheet.CustomerConfiguration(paymentService.getFinalCustomerID(), paymentService.getFinalEphimeral()))
+                paymentService.getFinalClientSecret(), config
         );
     }
 
