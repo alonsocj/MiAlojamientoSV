@@ -19,15 +19,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
-        <!--<com.airbnb.lottie.LottieAnimationView
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/cara"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            app:lottie_imageAssetsFolder="assets"
-            app:lottie_fileName="no_session.json"
             app:lottie_autoPlay="true"
-            />-->
+            app:lottie_loop="true"
+            android:layout_gravity="center"
+            app:lottie_rawRes="@raw/no_sesion"
+            />
         <Button
             android:id="@+id/respuesta"
             android:layout_width="60dp"
