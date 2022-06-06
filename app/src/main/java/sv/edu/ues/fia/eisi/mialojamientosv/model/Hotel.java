@@ -10,6 +10,7 @@ public class Hotel extends SugarRecord<Hotel> {
     private String direccion;
     private String latitudH;
     private String longitudH;
+    private String evaluaciones;
     Propietario propietario;
 
     public Hotel() {
@@ -88,5 +89,13 @@ public class Hotel extends SugarRecord<Hotel> {
 
     public void setPropietario(Propietario propietario) {
         this.propietario = propietario;
+    }
+
+    public String getEvaluaciones() {
+        return evaluaciones;
+    }
+
+    public void setEvaluaciones(String evaluaciones) {
+        this.evaluaciones = evaluaciones;
     }
 }

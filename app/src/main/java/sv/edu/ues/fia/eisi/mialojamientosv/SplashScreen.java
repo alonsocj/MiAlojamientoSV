@@ -11,6 +11,7 @@ import sv.edu.ues.fia.eisi.mialojamientosv.model.Favorito;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
+import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.MapaActivity;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashScreen extends AppCompatActivity {

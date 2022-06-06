@@ -1,91 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#D0ECE7">
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:layout_marginBottom="10dp"
-    android:background="@drawable/round_corner">
-    <TextView
-        android:id="@+id/usuario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:text="Usuario"
-        android:layout_gravity="left"
-        />
-    </LinearLayout>
-
-
+    android:background="#2E4053">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="1"
-        android:layout_margin="4dp">
-        <androidx.cardview.widget.CardView
-            cardview:cardCornerRadius="15dp"
+        android:layout_height="50dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/round_corner"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/contactoMensaje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="7dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/contactoMensaje"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Contacto 1"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginLeft="15sp"
-                        android:layout_weight="1"/>
-                    <TextView
-                        android:id="@+id/horaMensajeUltimo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7sp"
-                        android:layout_marginRight="15sp"
-                        android:text="00:00"
-                        android:layout_gravity="center"/>
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/ultimoMensaje"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Texto mensaje"
-                    android:layout_marginTop="3sp"
-                    android:layout_marginLeft="15sp"
-                    android:layout_marginBottom="10sp"
-                    android:layout_marginRight="10sp"
-                    />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            android:textSize="18dp"
+            android:textColor="#2E4053"
+            android:textAlignment="center"/>
     </LinearLayout>
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMensajes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/round_corner"
-        android:elevation="2dp"
-        app:itemIconSize="30dp"
-        app:itemIconTint="@drawable/item_selector"
-        app:itemRippleColor="@android:color/transparent"
-        app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/my_navigation_items" />
-
+        android:layout_marginTop="10dp"
+        android:layout_weight="1">
+    </androidx.recyclerview.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_margin="20dp">
+            <EditText
+                android:id="@+id/txtMensaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Escribe un mensaje"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:backgroundTint="@color/white"
+                android:textSize="18dp"
+                android:minLines="2"
+                android:layout_marginEnd="10dp"
+                android:minHeight="38dp"/>
+            <requestFocus/>
+            <Button
+                android:id="@+id/btnAudio"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:drawableBottom="@drawable/microfono"
+                android:layout_gravity="center"
+                android:background="@drawable/border_circle"
+                android:layout_marginRight="5sp"
+                android:backgroundTint="#0B5345 "
+                android:layout_marginEnd="10dp" />
+            <Button
+                android:id="@+id/btnEnviar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:drawableBottom="@drawable/ic_baseline_keyboard_arrow_right_24"
+                android:layout_gravity="center"
+                android:background="@drawable/border_circle"
+                android:backgroundTint="#0B5345 " />
+    </LinearLayout>
 </LinearLayout>
-

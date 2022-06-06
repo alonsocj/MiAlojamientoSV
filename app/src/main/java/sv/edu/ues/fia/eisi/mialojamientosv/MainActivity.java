@@ -8,24 +8,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListHotelAdapter;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityMainBinding;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
-import sv.edu.ues.fia.eisi.mialojamientosv.model.Propietario;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.FavoritosActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.MapaActivity;
-import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.MensajesActivity;
+import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.ChatsActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.PerfilActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setSelectedItemId(R.id.explore);
         //lista de todoos los hoteles
         hoteles = Hotel.listAll(Hotel.class);
+        Collections.reverse(hoteles);
         //manager de recycler
         listHoteles.setLayoutManager(new LinearLayoutManager(this));
 
@@ -86,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 break;
             case R.id.mensajes:
-                startActivity(new Intent(MainActivity.this, MensajesActivity.class));
+                startActivity(new Intent(MainActivity.this, ChatsActivity.class));
                 overridePendingTransition(0, 0);
                 break;
             case R.id.perfil:

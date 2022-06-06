@@ -24,6 +24,10 @@
             android:name=".ui.view.RegistroActivity"
             android:exported="false" />
         <activity
+        <activity
+            android:name=".ui.view.MensajesActivity"
+            android:exported="false" />
+        <activity
             android:name=".favoritoDetalleActivity"
             android:exported="false" />
         <activity
@@ -36,7 +40,7 @@
             android:name=".ui.view.PerfilActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.view.MensajesActivity"
+            android:name=".ui.view.ChatsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.view.FavoritosActivity"
