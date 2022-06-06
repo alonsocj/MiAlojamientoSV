@@ -125,12 +125,16 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
 
         infoHotelActual(savedInstanceState);
 
-        //Se recupera el perfil que esta logeado, por el momento es un numero fijo
-        perfil = Perfil.find(Perfil.class, "ID_PERFIL = " + 1, null).get(0);
+        //Se recupera el perfil que esta logeado
+        try{
+            perfil = Perfil.find(Perfil.class, "ID_PERFIL_F = '" + firebaseUser.getUid()+"'", null).get(0);
         //Se comprueba si existe le favorito en ese caso se pone la animación ya activa
         int i1 = Favorito.find(Favorito.class, "HOTEL = " + hotel.getId() + " AND PERFIL = " + perfil.getId(), null).size();
         if (i1 != 0) {
             botonf.setProgress(1);
+        }
+        }catch (Exception e){
+            Toast.makeText(view.getContext(), "Ocurrio un error", Toast.LENGTH_LONG).show();
         }
 
         paymentSheet = new PaymentSheet(this, paymentSheetResult -> {
@@ -337,22 +341,27 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
         botonf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //comprueba si ya existe el favorito
-                int i1 = Favorito.find(Favorito.class, "HOTEL = " + hotel.getId() + " AND PERFIL = " + perfil.getId(), null).size();
-                //Si no existe crea el favorito y activa la animación
-                if (i1 == 0) {
-                    Favorito favorito = new Favorito(1, perfil, hotel);
-                    favorito.save();
-                    botonf.playAnimation();
-                    Toast.makeText(view.getContext(), "Se ha agregado el hotel a tus favoritos", Toast.LENGTH_LONG).show();
-                    Log.d("prueba", i1 + "");
-                } else {
-                    // Si existe el favorito lo elimina y desactiva la animación
-                    Favorito favoritoold = Favorito.find(Favorito.class, "HOTEL = " + hotel.getId() + " AND PERFIL = " + perfil.getId(), null).get(0);
-                    favoritoold.delete();
-                    botonf.setProgress(0);
-                    Log.d("prueba", i1 + "");
-                    Toast.makeText(view.getContext(), "Hotel eliminado tus favoritos", Toast.LENGTH_LONG).show();
+                try {
+                    //comprueba si ya existe el favorito
+                    int i1 = Favorito.find(Favorito.class, "HOTEL = " + hotel.getId() + " AND PERFIL = " + perfil.getId(), null).size();
+                    //Si no existe crea el favorito y activa la animación
+                    if (i1 == 0) {
+                        Favorito favorito = new Favorito(1, perfil, hotel);
+                        favorito.save();
+                        botonf.playAnimation();
+                        Toast.makeText(view.getContext(), "Se ha agregado el hotel a tus favoritos", Toast.LENGTH_LONG).show();
+                        Log.d("prueba", i1 + "");
+                    } else {
+                        // Si existe el favorito lo elimina y desactiva la animación
+                        Favorito favoritoold = Favorito.find(Favorito.class, "HOTEL = " + hotel.getId() + " AND PERFIL = " + perfil.getId(), null).get(0);
+                        favoritoold.delete();
+                        botonf.setProgress(0);
+                        Log.d("prueba", i1 + "");
+                        Toast.makeText(view.getContext(), "Hotel eliminado tus favoritos", Toast.LENGTH_LONG).show();
+                    }
+                }
+                catch (Exception e){
+
                 }
             }
         });
