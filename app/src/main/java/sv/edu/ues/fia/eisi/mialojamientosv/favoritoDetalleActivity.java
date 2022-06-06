@@ -13,12 +13,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +43,12 @@ public class favoritoDetalleActivity extends AppCompatActivity {
         botonf = (LottieAnimationView) findViewById(R.id.animationFavorite);
         data = FirebaseDatabase.getInstance().getReference();
         botonf.setProgress(1);
+        FirebaseMessaging.getInstance().subscribeToTopic("enviaratodos").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                
+            }
+        });
         pushEspecifico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +86,31 @@ public class favoritoDetalleActivity extends AppCompatActivity {
         JSONObject json = new JSONObject();
         try{
             json.put("to",token);
+            JSONObject notificacion =new JSONObject();
+            notificacion.put("titulo","Mensaje Nuevo");
+            notificacion.put("detalle","Tiene mensajes nuevos");
+            json.put("data",notificacion);
+            String url = "https://fcm.googleapis.com/fcm/send";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,json,null,null){
+                @Override
+                public Map<String, String> getHeaders(){
+                    Map<String, String> header = new HashMap<>();
+                    header.put("Authorization", "key=AAAALA98pYw:APA91bHRnlGfODSkRge-a_oNmTdSWGLr1WlYytnXsr1FVTgdWHn_kjCL7Vmrv9OtgbEVDJozqAgKlKjyip2-h_3UEokH2VtLRPPnaffb0ZAjsCCkMZZESroqb5H3-fenUmzpQU-nzp3_");
+                    header.put("Content-type", "application/json");
+                    return header;
+                }
+            };
+            myrequest.add(request);
+        }catch (JSONException e){
+            e.printStackTrace();
+            Toast.makeText(this,"no sirve",Toast.LENGTH_LONG);
+        }
+    }
+    private void NotificacionTopico() {
+        RequestQueue myrequest = Volley.newRequestQueue(getApplicationContext());
+        JSONObject json = new JSONObject();
+        try{
+            json.put("to","/topics/"+"enviaratodos");
             JSONObject notificacion =new JSONObject();
             notificacion.put("titulo","Mensaje Nuevo");
             notificacion.put("detalle","Tiene mensajes nuevos");

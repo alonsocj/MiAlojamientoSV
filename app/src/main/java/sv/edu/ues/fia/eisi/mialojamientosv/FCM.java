@@ -17,6 +17,9 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Random;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.ChatsActivity;
+import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.MensajesActivity;
+
 public class FCM extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
@@ -62,7 +65,7 @@ public class FCM extends FirebaseMessagingService {
     }
 
     public PendingIntent clicknoti(){
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ChatsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
     }
