@@ -117,8 +117,8 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
                     chat.setIdChat(idHotel);
                     chat.setNombre(name);
-                    chat.setEmisor(1);
-                    chat.setReceptor(1);
+                    chat.setEmisor(""+1);
+                    chat.setReceptor(""+1);
                     chat.save();
 
                     habitacion.setIdHotel(hotel);

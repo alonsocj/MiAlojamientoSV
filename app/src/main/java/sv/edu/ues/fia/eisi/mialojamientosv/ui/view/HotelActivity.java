@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.se.omapi.Session;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
@@ -29,18 +31,25 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
 
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Properties;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.JavaMailAPI;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.SplashScreen;
 import sv.edu.ues.fia.eisi.mialojamientosv.StripeService;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityHotelBinding;
+import sv.edu.ues.fia.eisi.mialojamientosv.homeLogin;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Favorito;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Habitacion;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
@@ -50,6 +59,8 @@ import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.Comunicacion;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.viewModel.HotelViewModel;
 
 public class HotelActivity extends AppCompatActivity implements Comunicacion, OnMapReadyCallback {
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
 
     ActivityHotelBinding binding;
     TextView tvNombreHotel, tvDireccionHotel, tvDescriptionHotel, tiempoReserva, tiempoReservaFin, precioReserva, camas, banios, personas, servicios, valoracion;
@@ -65,10 +76,19 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
     PaymentSheet paymentSheet;
     GoogleMap map;
 
+    Session session=null;
+    String rec, subject, textMessage;
+    ProgressDialog pdialog = null;
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        firebaseAuth= FirebaseAuth.getInstance();
+        firebaseUser=firebaseAuth.getCurrentUser();
+
+
         binding = ActivityHotelBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -116,6 +136,12 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
                 paymentFlow();
             }
         });
+    }
+
+    //Envio de correo de la confirmación de la reservación.
+    private void envioEmail(){
+        JavaMailAPI javaMailAPI=new JavaMailAPI(this,"gustavopineda400@gmail.com","Reservacion elaborada","Su reservación ha sido satisfactoria");
+        javaMailAPI.execute();
     }
 
     private void elementsInit() {
@@ -181,6 +207,18 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
 
         new HotelViewModel(HotelActivity.this).execute(3500, paymentService, this);
     }
+    protected void onStart(){
+        verificarInicioSesion();
+        super.onStart();
+    }
+
+    private void verificarInicioSesion(){
+        if(firebaseUser!=null){
+        }else{
+            startActivity(new Intent(this, homeLogin.class));
+            finish();
+        }
+    }
 
     private void onPaymentResult(PaymentSheetResult paymentSheetResult) {
         if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
@@ -210,6 +248,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
             reservacion.setPrecioTotal(cantDias * (Float.parseFloat(this.precio)));
             reservacion.save();
             Toast.makeText(this, "Payment Successful", Toast.LENGTH_SHORT).show();
+            envioEmail();
         }
     }
 
@@ -218,9 +257,16 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
     }
 
     private void paymentFlow() {
+        PaymentSheet.CustomerConfiguration customerConfiguration = new PaymentSheet.CustomerConfiguration(paymentService.getFinalCustomerID(),
+                paymentService.getFinalEphimeral());
+        PaymentSheet.BillingDetails billingDetails = new PaymentSheet.BillingDetails(new PaymentSheet.Address("", "SV", hotel.getDireccion(), "", "", ""),
+                null,null,null);
+        PaymentSheet.Configuration config = new PaymentSheet.Configuration.Builder(hotel.getTitulo())
+                .defaultBillingDetails(billingDetails).customer(customerConfiguration).build();
+        /*(hotel.getTitulo(),
+                new PaymentSheet.CustomerConfiguration(paymentService.getFinalCustomerID(), paymentService.getFinalEphimeral()));*/
         paymentSheet.presentWithPaymentIntent(
-                paymentService.getFinalClientSecret(), new PaymentSheet.Configuration(hotel.getTitulo(),
-                        new PaymentSheet.CustomerConfiguration(paymentService.getFinalCustomerID(), paymentService.getFinalEphimeral()))
+                paymentService.getFinalClientSecret(), config
         );
     }
 

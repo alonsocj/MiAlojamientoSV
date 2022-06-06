@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +24,14 @@ import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListHotelAdapter;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityFavoritosBinding;
+import sv.edu.ues.fia.eisi.mialojamientosv.homeLogin;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Favorito;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Hotel;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
 
 public class FavoritosActivity extends AppCompatActivity {
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
 
     ActivityFavoritosBinding binding;
     BottomNavigationView navigationView;
@@ -38,6 +43,11 @@ public class FavoritosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        firebaseAuth= FirebaseAuth.getInstance();
+        firebaseUser=firebaseAuth.getCurrentUser();
+
+
         binding = ActivityFavoritosBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -75,7 +85,18 @@ public class FavoritosActivity extends AppCompatActivity {
             }
         });
     }
+    protected void onStart(){
+        verificarInicioSesion();
+        super.onStart();
+    }
 
+    private void verificarInicioSesion(){
+        if(firebaseUser!=null){
+        }else{
+            startActivity(new Intent(this, homeLogin.class));
+            finish();
+        }
+    }
 
     @SuppressLint("NonConstantResourceId")
     public void setActivity(@NonNull MenuItem item) {

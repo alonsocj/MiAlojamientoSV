@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,10 +30,13 @@ import java.util.Locale;
 import java.util.TimeZone;
 import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListMensajesAdapter;
 import sv.edu.ues.fia.eisi.mialojamientosv.TextToSpeechManager;
+import sv.edu.ues.fia.eisi.mialojamientosv.homeLogin;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Mensaje;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 
 public class MensajesActivity extends AppCompatActivity{
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
 
     private EditText mensaje;
     private TextView hotel,nombre;
@@ -54,6 +59,11 @@ public class MensajesActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        firebaseAuth= FirebaseAuth.getInstance();
+        firebaseUser=firebaseAuth.getCurrentUser();
+
+
         setContentView(R.layout.activity_mensajes);
 
         mensaje = findViewById(R.id.txtMensaje);
@@ -73,7 +83,7 @@ public class MensajesActivity extends AppCompatActivity{
 
         //Inicializamos la base de datos
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference(codigoChat);  //Sala de Chat, donde se "Guardaran" los mensajes
+        databaseReference = database.getReference().child("Chats").child(codigoChat);  //Sala de Chat, donde se "Guardaran" los mensajes
 
         //Inicializando el Chat
         hotel.setText(nombreHotel);
@@ -146,6 +156,18 @@ public class MensajesActivity extends AppCompatActivity{
 
             }
         });
+    }
+    protected void onStart(){
+        verificarInicioSesion();
+        super.onStart();
+    }
+
+    private void verificarInicioSesion(){
+        if(firebaseUser!=null){
+        }else{
+            startActivity(new Intent(this, homeLogin.class));
+            finish();
+        }
     }
     //se graba la voz y si se realiza pasa al siguiente metodo
     private void iniciarEntradaVoz() {
