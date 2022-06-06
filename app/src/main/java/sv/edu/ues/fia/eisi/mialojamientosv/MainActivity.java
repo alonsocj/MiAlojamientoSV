@@ -10,9 +10,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +29,8 @@ import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.ChatsActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.PerfilActivity;
 
 public class MainActivity extends AppCompatActivity {
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
 
     private ActivityMainBinding binding;
     BottomNavigationView navigationView;
@@ -36,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        firebaseAuth= FirebaseAuth.getInstance();
+        firebaseUser=firebaseAuth.getCurrentUser();
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -69,7 +78,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    protected void onStart(){
+        verificarInicioSesion();
+        super.onStart();
+    }
 
+    private void verificarInicioSesion(){
+        if(firebaseUser!=null){
+        }else{
+            startActivity(new Intent(this, homeLogin.class));
+            finish();
+        }
+    }
     @SuppressLint("NonConstantResourceId")
     public void setActivity(@NonNull MenuItem item) {
         switch (item.getItemId()) {
