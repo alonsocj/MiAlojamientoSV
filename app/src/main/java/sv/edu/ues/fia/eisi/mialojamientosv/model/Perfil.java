@@ -4,7 +4,7 @@ import com.orm.SugarRecord;
 
 
 public class Perfil extends SugarRecord<Perfil> {
-    private int idPerfil;
+    private String idPerfilF;
     private String nombre;
     private String genero;
     private String email;
@@ -12,19 +12,19 @@ public class Perfil extends SugarRecord<Perfil> {
     public Perfil() {
     }
 
-    public Perfil(int idPerfil, String nombre, String genero, String email) {
-        this.idPerfil = idPerfil;
+    public Perfil(String idPerfilF, String nombre, String genero, String email) {
+        this.idPerfilF = idPerfilF;
         this.nombre = nombre;
         this.genero = genero;
         this.email = email;
     }
 
-    public int getIdPerfil() {
-        return idPerfil;
+    public String getIdPerfilF() {
+        return idPerfilF;
     }
 
-    public void setIdPerfil(int idPerfil) {
-        this.idPerfil = idPerfil;
+    public void setIdPerfilF(String idPerfilF) {
+        this.idPerfilF = idPerfilF;
     }
 
     public String getNombre() {

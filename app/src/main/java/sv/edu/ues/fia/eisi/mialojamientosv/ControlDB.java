@@ -45,7 +45,7 @@ public class ControlDB {
     private static void llenarPerfil() {
         try{
             Perfil perfil = new Perfil();
-            perfil.setIdPerfil(1);
+            perfil.setIdPerfilF("a");
             perfil.setNombre("Perfil 1");
             perfil.setGenero("Masculino");
             perfil.setEmail("email");

@@ -71,7 +71,7 @@ public class FavoritosActivity extends AppCompatActivity {
         navigationView = binding.bottomNavigation;
         navigationView.setSelectedItemId(R.id.favoritos);
         try{
-            perfil = Perfil.find(Perfil.class, "ID_PERFIL = " + 1, null).get(0);
+            perfil = Perfil.find(Perfil.class, "ID_PERFIL_F = '" + firebaseUser.getUid()+"'", null).get(0);
             favoritos =  Favorito.findWithQuery(Favorito.class, "SELECT * FROM FAVORITO WHERE PERFIL = "+perfil.getId());
             if(favoritos.size() != 0){
                 for (int i = 0; i < favoritos.size(); i++) {

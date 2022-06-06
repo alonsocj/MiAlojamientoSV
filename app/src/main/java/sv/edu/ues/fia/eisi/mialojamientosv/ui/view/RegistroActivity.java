@@ -31,6 +31,7 @@ import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.SplashScreen;
 import sv.edu.ues.fia.eisi.mialojamientosv.homeLogin;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
 
 public class RegistroActivity extends AppCompatActivity {
 
@@ -114,6 +115,16 @@ public class RegistroActivity extends AppCompatActivity {
                             FirebaseDatabase database= FirebaseDatabase.getInstance();
                             DatabaseReference reference=database.getReference("usuariosApp");
                             reference.child(uid).setValue(DatosUsuario);
+
+                            try{
+                                Perfil perfil = new Perfil();
+                                perfil.setIdPerfilF(uid);
+                                perfil.setNombre(nom);
+                                perfil.setGenero(gen);
+                                perfil.setEmail(correo);
+                                perfil.save();
+                            }catch (Exception e){
+                            }
 
                             Toast.makeText(RegistroActivity.this,"Se registró exitosamente",Toast.LENGTH_SHORT).show();
 
