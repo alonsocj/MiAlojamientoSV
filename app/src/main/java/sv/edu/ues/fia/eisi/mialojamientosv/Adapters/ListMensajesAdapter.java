@@ -41,8 +41,4 @@ public class ListMensajesAdapter extends RecyclerView.Adapter<ListHolderMensaje>
     public int getItemCount() {
         return listMensaje.size();
     }
-
-    void onMensajeClicked(int position, String mensaje, String nombreUser) {
-
-    }
 }
