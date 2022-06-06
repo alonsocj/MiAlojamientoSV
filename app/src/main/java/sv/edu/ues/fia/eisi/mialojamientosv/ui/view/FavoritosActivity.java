@@ -104,20 +104,24 @@ public class FavoritosActivity extends AppCompatActivity {
             case R.id.explore:
                 startActivity(new Intent(FavoritosActivity.this, MainActivity.class));
                 overridePendingTransition(0, 0);
+                finish();
                 break;
             case R.id.favoritos:
                 break;
             case R.id.mapa:
                 startActivity(new Intent(FavoritosActivity.this, MapaActivity.class));
                 overridePendingTransition(0, 0);
+                finish();
                 break;
             case R.id.mensajes:
                 startActivity(new Intent(FavoritosActivity.this, ChatsActivity.class));
                 overridePendingTransition(0, 0);
+                finish();
                 break;
             case R.id.perfil:
                 startActivity(new Intent(FavoritosActivity.this, PerfilActivity.class));
                 overridePendingTransition(0, 0);
+                finish();
                 break;
         }
     }

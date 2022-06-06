@@ -40,8 +40,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListMensajesAdapter;
+import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.TextToSpeechManager;
 import sv.edu.ues.fia.eisi.mialojamientosv.homeLogin;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Chat;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Mensaje;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 
@@ -235,7 +237,11 @@ public class MensajesActivity extends AppCompatActivity{
         super.onDestroy();
         textToSpeech.apagar();
     }
-
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, ChatsActivity.class));
+        finish();
+    }
     private void NotificacionTopico() {
         RequestQueue myrequest = Volley.newRequestQueue(getApplicationContext());
         JSONObject json = new JSONObject();

@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.MapaActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.RegistroActivity;
 
 public class homeLogin extends AppCompatActivity {
@@ -96,7 +97,7 @@ public class homeLogin extends AppCompatActivity {
                             progressDialog.dismiss();
                             FirebaseUser user=firebaseAuth.getCurrentUser();
 
-                            startActivity(new Intent(homeLogin.this, MainActivity.class));
+                            startActivity(new Intent(homeLogin.this, MapaActivity.class));
 
                             assert user != null; //se afirma que el usuario no es nulo
                             finish();

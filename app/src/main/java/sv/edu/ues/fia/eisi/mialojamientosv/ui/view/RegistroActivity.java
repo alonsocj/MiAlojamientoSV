@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import sv.edu.ues.fia.eisi.mialojamientosv.FCM;
+import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.SplashScreen;
 import sv.edu.ues.fia.eisi.mialojamientosv.homeLogin;
@@ -83,6 +84,11 @@ public class RegistroActivity extends AppCompatActivity {
             }
 
         });
+    }
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, homeLogin.class));
+        finish();
     }
     private void registrarse(String correo, String pass) {
         firebaseAuth.createUserWithEmailAndPassword(correo, pass)
