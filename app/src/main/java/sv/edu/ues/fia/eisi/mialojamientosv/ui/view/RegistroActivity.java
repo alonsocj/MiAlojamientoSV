@@ -101,16 +101,6 @@ public class RegistroActivity extends AppCompatActivity {
                             String nom=nombre.getText().toString();
                             String gen=genero.getText().toString();
 
-                            FirebaseMessaging.getInstance().getToken()
-                                    .addOnCompleteListener(task1 -> {
-                                        if (!task1.isSuccessful()) {
-                                            Toast.makeText(RegistroActivity.this, "Ocurrio un error", Toast.LENGTH_SHORT).show();
-                                            return;
-                                        }
-                                        String token = task1.getResult();
-                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("token");
-                                        ref.child(uid).setValue(token);
-                                    });
 
                             //Creamos un HashMap para mandar los datos a Firebase
                             HashMap<Object,String> DatosUsuario=new HashMap<>();
@@ -123,6 +113,25 @@ public class RegistroActivity extends AppCompatActivity {
                             FirebaseDatabase database= FirebaseDatabase.getInstance();
                             DatabaseReference reference=database.getReference("usuariosApp");
                             reference.child(uid).setValue(DatosUsuario);
+
+                            //Guardamos el token del telefono
+                            FirebaseMessaging.getInstance().getToken()
+                                    .addOnCompleteListener(task1 -> {
+                                        if (!task1.isSuccessful()) {
+                                            Toast.makeText(RegistroActivity.this, "Ocurrio un error", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+                                        String token = task1.getResult();
+                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("token");
+                                        ref.child(uid).setValue(token);
+                                    });
+                            //Suscribimos al user a topico (por si no se puede de la otra forma)
+                            FirebaseMessaging.getInstance().subscribeToTopic("enviaratodos").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                }
+                            });
+
                             Toast.makeText(RegistroActivity.this,"Se registró exitosamente",Toast.LENGTH_SHORT).show();
 
                             startActivity(new Intent(RegistroActivity.this, homeLogin.class));
