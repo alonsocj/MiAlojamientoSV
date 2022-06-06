@@ -43,14 +43,17 @@ public class ControlDB {
         }
     }
     private static void llenarPerfil() {
-        Favorito.deleteAll(Favorito.class);
-        Perfil.deleteAll(Perfil.class);
-        Perfil perfil = new Perfil();
-        perfil.setIdPerfil(1);
-        perfil.setNombre("Perfil 1");
-        perfil.setGenero("Masculino");
-        perfil.setEmail("email");
-        perfil.save();
+        try{
+            Perfil perfil = new Perfil();
+            perfil.setIdPerfil(1);
+            perfil.setNombre("Perfil 1");
+            perfil.setGenero("Masculino");
+            perfil.setEmail("email");
+            perfil.save();
+        }catch (Exception e){
+
+        }
+
     }
 
     private static void llenarChats() {
