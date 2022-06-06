@@ -5,13 +5,13 @@ import com.orm.SugarRecord;
 public class Chat extends SugarRecord<Chat> {
     private String idChat;
     private String nombre;
-    private Integer emisor;
-    private Integer receptor;
+    private String emisor;
+    private String receptor;
 
     public Chat() {
     }
 
-    public Chat(String idChat, String nombre, Integer emisor, Integer receptor) {
+    public Chat(String idChat, String nombre, String emisor, String receptor) {
         this.idChat = idChat;
         this.nombre = nombre;
         this.emisor = emisor;
@@ -34,19 +34,19 @@ public class Chat extends SugarRecord<Chat> {
         this.nombre = nombre;
     }
 
-    public Integer getEmisor() {
+    public String getEmisor() {
         return emisor;
     }
 
-    public void setEmisor(Integer emisor) {
+    public void setEmisor(String emisor) {
         this.emisor = emisor;
     }
 
-    public Integer getReceptor() {
+    public String getReceptor() {
         return receptor;
     }
 
-    public void setReceptor(Integer receptor) {
+    public void setReceptor(String receptor) {
         this.receptor = receptor;
     }
 }
