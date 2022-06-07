@@ -4,6 +4,7 @@ package sv.edu.ues.fia.eisi.mialojamientosv.ui.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GestureDetectorCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -55,12 +56,17 @@ public class ChatsActivity extends AppCompatActivity {
     public static DatabaseReference databaseReference2;
     public static String idPerfil;
 
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityChatsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        //Instanciamos los objetos de la vista
+        swipeRefreshLayout=binding.refresh;
 
         gestureDetectorCompat=new GestureDetectorCompat(this, new ChatsActivity.GestureDetectorListener());
 
@@ -110,6 +116,15 @@ public class ChatsActivity extends AppCompatActivity {
                 i.putExtra("nombreHotel", elegido.getNombre());
                 i.putExtra("receptor",elegido.getReceptor());
                 startActivity(i);
+            }
+        });
+
+        //Refrescamos la lista de chats
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                startActivity(getIntent());
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
