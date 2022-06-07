@@ -24,13 +24,17 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.MapaActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.ui.view.RegistroActivity;
 
@@ -119,7 +123,36 @@ public class homeLogin extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                 }
                             });
-                            finish();
+                            DatabaseReference baseDatos= FirebaseDatabase.getInstance().getReference("usuariosApp");
+
+                            //Extraemos el usuario logueado
+                            baseDatos.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    //Si el usuario existe
+                                    if (snapshot.exists()){
+                                        //obteniendo datos
+                                        String correos=""+snapshot.child("correo").getValue();
+                                        String generos=""+snapshot.child("genero").getValue();
+                                        String nombres=""+snapshot.child("nombre").getValue();
+                                        try{
+                                            Perfil perfil = new Perfil();
+                                            perfil.setIdPerfilF(user.getUid());
+                                            perfil.setNombre(nombres);
+                                            perfil.setGenero(generos);
+                                            perfil.setEmail(correos);
+                                            perfil.save();
+                                        }catch (Exception e){
+                                        }
+                                        finish();
+                                    }
+
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
 
                         }else{
                             progressDialog.dismiss();
