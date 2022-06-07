@@ -27,9 +27,6 @@
             android:name=".ui.view.MensajesActivity"
             android:exported="false" />
         <activity
-            android:name=".favoritoDetalleActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.view.HotelActivity"
             android:exported="false" />
         <activity
