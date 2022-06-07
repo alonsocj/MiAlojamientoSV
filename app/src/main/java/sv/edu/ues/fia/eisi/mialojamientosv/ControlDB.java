@@ -19,7 +19,7 @@ public class ControlDB {
 
     public static void llenarBase(){
         //llenarHoteles();
-        llenarPerfil();
+        //llenarPerfil();
         //llenarChats();
     }
     private static void llenarHoteles() {
