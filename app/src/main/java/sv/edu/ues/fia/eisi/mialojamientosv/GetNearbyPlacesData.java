@@ -115,15 +115,8 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
                     hotel.setDireccion(direccion);
                     hotel.save();
 
-                    chat.setIdChat(idHotel);
-                    chat.setNombre(name);
-                    chat.setEmisor(""+1);
-                    chat.setReceptor(""+1);
-                    chat.save();
-
                     habitacion.setIdHotel(hotel);
                     habitacion.save();
-
                 }
 
                 /*Obtengo la latitud y longitud*/
@@ -145,13 +138,10 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
                 markerOptions.snippet(rating + " ⭐ ," + direccion);
                 markerOptions.position(latLng);
                 googleMap.addMarker(markerOptions);
-
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
-
 }

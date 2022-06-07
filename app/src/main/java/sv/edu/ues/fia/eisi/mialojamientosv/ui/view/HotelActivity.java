@@ -83,7 +83,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
     StripeService paymentService;
     PaymentSheet paymentSheet;
     GoogleMap map;
-    String idPerfil,idPropietario="mialojamientosv@outlook.es";
+    String idPerfil, nombrePerfil,idPropietario="mialojamientosv@outlook.es";
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -102,6 +102,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
                 if (snapshot.exists()){
                     //obteniendo datos
                     idPerfil=""+snapshot.child("correo").getValue();
+                    nombrePerfil=""+snapshot.child("nombre").getValue();
                 }
             }
 
@@ -180,7 +181,7 @@ public class HotelActivity extends AppCompatActivity implements Comunicacion, On
                 HashMap<Object,String> Chats=new HashMap<>();
                 Chats.put("uid",uid);
                 Chats.put("idChat",codigo);
-                Chats.put("nombre",hotel.getTitulo());
+                Chats.put("nombre",hotel.getTitulo()+"\n"+nombrePerfil.toUpperCase());
                 Chats.put("emisor",idPerfil);
                 Chats.put("receptor",idPropietario);
                 FirebaseDatabase database= FirebaseDatabase.getInstance();

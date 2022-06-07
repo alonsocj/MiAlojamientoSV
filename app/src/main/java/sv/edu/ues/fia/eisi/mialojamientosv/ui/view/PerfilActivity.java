@@ -34,6 +34,7 @@ import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
 import sv.edu.ues.fia.eisi.mialojamientosv.databinding.ActivityPerfilBinding;
 import sv.edu.ues.fia.eisi.mialojamientosv.homeLogin;
+import sv.edu.ues.fia.eisi.mialojamientosv.model.Chat;
 import sv.edu.ues.fia.eisi.mialojamientosv.model.Perfil;
 
 public class PerfilActivity extends AppCompatActivity {

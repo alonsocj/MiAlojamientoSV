@@ -8,6 +8,7 @@ import androidx.core.view.GestureDetectorCompat;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -28,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import sv.edu.ues.fia.eisi.mialojamientosv.Adapters.ListChatsAdapter;
 import sv.edu.ues.fia.eisi.mialojamientosv.MainActivity;
 import sv.edu.ues.fia.eisi.mialojamientosv.R;
@@ -47,10 +50,10 @@ public class ChatsActivity extends AppCompatActivity {
     ActivityChatsBinding binding;
     BottomNavigationView navigationView;
     ListView listaChats;
-    List<Chat> listadoChat, listadoChatFirebase;
-    List<Chat> listadoChatUsuario;
+    List<Chat> listadoChat;
     private DatabaseReference databaseReference;
-    String idPerfil="1";
+    public static DatabaseReference databaseReference2;
+    public static String idPerfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,43 +64,28 @@ public class ChatsActivity extends AppCompatActivity {
 
         gestureDetectorCompat=new GestureDetectorCompat(this, new ChatsActivity.GestureDetectorListener());
 
-
+        //Instanciamos nuestro autenticador
         firebaseAuth= FirebaseAuth.getInstance();
         firebaseUser=firebaseAuth.getCurrentUser();
-
-
-        //Inicializamos nuestro listado de chat para el perfil logueado
-        listadoChatUsuario=new ArrayList<>();
-        listadoChatFirebase=new ArrayList<>();
-
-        //Extraemos los chats de la base de datos
-        listadoChat = Chat.listAll(Chat.class);
-
-        //Cargamos la base de datos y cargamos los chats
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        getChatsFirebase();
-
-        if(listadoChat==null){
-            listadoChat=listadoChatFirebase;
-        }else{
-            //Actualizamos los chats de la base de datos local
-            for (int i=0;i<listadoChatFirebase.size();i++){
-                Chat chat=listadoChatFirebase.get(i);
-                for (int j=0;j<listadoChat.size();j++){
-                    if (!(chat.getIdChat().equals(listadoChat.get(j).getIdChat()))){
-                        listadoChat.add(listadoChatFirebase.get(i));
-                    }
+        databaseReference= FirebaseDatabase.getInstance().getReference("usuariosApp");
+        databaseReference.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //Si el usuario existe
+                if (snapshot.exists()){
+                    //obteniendo datos
+                    idPerfil=""+snapshot.child("correo").getValue();
                 }
             }
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
 
-        //Seleccionamos los chats del perfil logueado
-        for(int i=0;i<listadoChat.size();i++){
-           Chat valor=listadoChat.get(i);
-           if(valor.getEmisor().equals(idPerfil) || valor.getReceptor().equals(idPerfil)){
-               listadoChatUsuario.add(valor);
-           }
-        }
+        //Extraemos los chats de la base de datos
+        databaseReference2 = FirebaseDatabase.getInstance().getReference();
+        listadoChat=new ArrayList<>();
+        getChatsFirebase();
+        listadoChat=Chat.listAll(Chat.class);
 
         //Cargamos los chats del perfil en pantalla
         listaChats = (ListView) findViewById(R.id.ListadoChats);
@@ -222,19 +210,46 @@ public class ChatsActivity extends AppCompatActivity {
         }
     }
 
-    private void getChatsFirebase(){
-        databaseReference.child("ListadoChats").addValueEventListener(new ValueEventListener() {
+    public static void getChatsFirebase(){
+        //Extraemos los datos de la base de datos Firebase
+        databaseReference2 = FirebaseDatabase.getInstance().getReference();
+        databaseReference2.child("ListadoChats").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for (DataSnapshot data: snapshot.getChildren()) {
-                        Chat chat = new Chat();
-                        chat.setIdChat(data.child("idChat").getValue().toString());
-                        chat.setNombre(data.child("nombre").getValue().toString());
-                        chat.setEmisor(data.child("emisor").getValue().toString());
-                        chat.setReceptor(data.child("receptor").getValue().toString());
-                        listadoChatFirebase.add(chat);
-                    }
+                Chat.deleteAll(Chat.class);
+                for (DataSnapshot data:snapshot.getChildren()){
+                    databaseReference2.child("ListadoChats").child(data.getKey()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Chat chat=new Chat();
+                            chat.setIdChat(""+snapshot.child("idChat").getValue());
+                            chat.setNombre(""+snapshot.child("nombre").getValue());
+                            chat.setEmisor(""+snapshot.child("emisor").getValue());
+                            chat.setReceptor(""+snapshot.child("receptor").getValue());
+
+                            Log.d("result", chat.getIdChat()+" "+chat.getNombre()+" "+chat.getEmisor()+" "+chat.getReceptor());
+
+                            List<Chat> listaChats=Chat.listAll(Chat.class);
+                            Boolean existe=false;
+                            for(int i=0;i<listaChats.size();i++){
+                                if(listaChats.get(i).getIdChat().equals(chat.getIdChat())){
+                                    existe=true;
+                                    break;
+                                }
+                            }
+                            if(!existe){
+                                //Seleccionamos los chats del perfil logueado
+                                if (chat.getEmisor().equals(idPerfil) || chat.getReceptor().equals(idPerfil)) {
+                                    chat.save();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             }
 
