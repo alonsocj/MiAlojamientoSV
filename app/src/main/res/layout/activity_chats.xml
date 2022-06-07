@@ -22,7 +22,8 @@
             android:textAlignment="center"
             android:text="@string/tituloChat" />
         </LinearLayout>
-        <LinearLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -33,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:divider="@null">
             </ListView>
-        </LinearLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"

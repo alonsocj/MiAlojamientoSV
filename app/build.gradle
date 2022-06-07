@@ -46,6 +46,9 @@ dependencies {
 
     /* LIBRERIAS  */
 
+    /* SEWIPERE */
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
     /* STRIPE */
     implementation "com.stripe:stripe-java:20.77.0"
     implementation 'com.stripe:stripe-android:20.2.2'

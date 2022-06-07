@@ -91,7 +91,6 @@ public class MapaActivity extends FragmentActivity implements OnMapReadyCallback
         firebaseAuth= FirebaseAuth.getInstance();
         firebaseUser=firebaseAuth.getCurrentUser();
 
-
         binding = ActivityMapaBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
